@@ -151,18 +151,14 @@
 
 <body>
 
-    <!-- HEADER -->
     <div class="header">
         <h1>📚 Sistem Informasi Perpustakaan</h1>
 
         <span>{{ Auth::user()->nama }}</span>
     </div>
 
-
-    <!-- CONTENT -->
     <div class="container">
 
-        <!-- TOP -->
         <div class="top">
 
             <div>
@@ -184,8 +180,6 @@
 
         </div>
 
-
-        <!-- SUCCESS MESSAGE -->
         @if (session('success'))
 
             <div class="success">
@@ -194,8 +188,32 @@
 
         @endif
 
+        <form action="{{ route('anggota.index') }}" method="GET" style="margin-bottom: 20px; display: flex; gap: 10px;">
 
-        <!-- TABLE -->
+            <input
+                type="text"
+                name="search"
+                value="{{ $search ?? '' }}"
+                placeholder="Cari ID, nama, jenis anggota, atau kelas/prodi..."
+                style="flex: 1; padding: 11px 14px; border: 1px solid #d1d5db; border-radius: 8px; outline: none;"
+            >
+
+            <button
+                type="submit"
+                class="button"
+                style="border: none; cursor: pointer;"
+            >
+                🔎 Cari
+            </button>
+
+            @if ($search)
+                <a href="{{ route('anggota.index') }}" class="button" style="background: #64748b;">
+                    Reset
+                </a>
+            @endif
+
+        </form>
+
         <div class="table-box">
 
             <table>
