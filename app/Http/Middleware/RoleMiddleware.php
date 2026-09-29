@@ -15,7 +15,7 @@ class RoleMiddleware
         }
 
         if ($request->user()->role !== $role) {
-            abort(403, 'Anda tidak memiliki akses ke halaman ini.');
+            return response()->view('errors.403', [], 403);
         }
 
         return $next($request);
