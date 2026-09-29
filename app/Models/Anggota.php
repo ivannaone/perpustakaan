@@ -26,4 +26,9 @@ class Anggota extends Model
     protected $casts = [
         'tgl_lahir' => 'date',
     ];
+
+    public function getRouteKeyName()
+    {
+        return 'id_anggota';
+    }
 }
