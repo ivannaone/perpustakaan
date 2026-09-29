@@ -180,7 +180,7 @@
             </li>
 
             <li>
-                <a href="#">👥 Data Anggota</a>
+                <a href="{{ route('anggota.index') }}">👥 Data Anggota</a>
             </li>
 
             <li>

@@ -14,7 +14,8 @@ return new class extends Migration
             Schema::create('anggota', function (Blueprint $table) {
             $table->string('id_anggota', 10)->primary();
             $table->string('nama_anggota', 100);
-            $table->string('kelas', 20);
+            $table->string('jenis_anggota', 20);
+            $table->string('kelas_prodi', 50)->nullable();
             $table->string('tempat_lahir', 30)->nullable();
             $table->date('tgl_lahir')->nullable();
             $table->timestamps();
