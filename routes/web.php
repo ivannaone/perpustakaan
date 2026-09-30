@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AnggotaController;
 use App\Http\Controllers\BukuController;
 use App\Http\Controllers\DetailBukuController;
+use App\Http\Controllers\PeminjamanController;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -54,7 +55,18 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::resource('buku', BukuController::class);
 
     Route::post('/detail-buku/generate/{buku}', [DetailBukuController::class, 'generate'])
-    ->name('detail-buku.generate');
+        ->name('detail-buku.generate');
 
     Route::resource('detail-buku', DetailBukuController::class);
+
+    Route::post('/peminjaman/{peminjaman}/kembalikan', [PeminjamanController::class, 'returnBook'])
+        ->name('peminjaman.return');
+
+    Route::resource('peminjaman', PeminjamanController::class)
+        ->only([
+            'index',
+            'create',
+            'store',
+            'destroy'
+        ]);
 });

@@ -74,6 +74,11 @@
             font-size: 28px;
         }
 
+        .topbar p {
+            margin-top: 5px;
+            color: #7b8494;
+        }
+
         .admin-name {
             background: white;
             padding: 11px 18px;
@@ -139,11 +144,26 @@
             background: rgba(255,255,255,0.12);
             color: white;
             cursor: pointer;
+            font-size: 14px;
+        }
+
+        .logout button:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        @media (max-width: 1100px) {
+            .cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
 
         @media (max-width: 900px) {
-            .cards {
-                grid-template-columns: repeat(2, 1fr);
+            .sidebar {
+                width: 210px;
+            }
+
+            .main {
+                margin-left: 210px;
             }
         }
 
@@ -159,8 +179,18 @@
                 padding: 20px;
             }
 
+            .topbar {
+                align-items: flex-start;
+                gap: 15px;
+                flex-direction: column;
+            }
+
             .cards {
                 grid-template-columns: 1fr;
+            }
+
+            .admin-name {
+                width: 100%;
             }
         }
     </style>
@@ -175,34 +205,55 @@
         </div>
 
         <ul class="menu">
+
             <li>
-                <a href="#" class="active">🏠 Dashboard</a>
+                <a href="{{ route('admin.dashboard') }}" class="active">
+                    🏠 Dashboard
+                </a>
             </li>
 
             <li>
-                <a href="{{ route('anggota.index') }}">👥 Data Anggota</a>
+                <a href="{{ route('anggota.index') }}">
+                    👥 Data Anggota
+                </a>
             </li>
 
             <li>
-                <a href="{{ route('buku.index') }}">📚 Data Buku</a>
+                <a href="{{ route('buku.index') }}">
+                    📚 Data Buku
+                </a>
             </li>
 
             <li>
-                <a href="#">📖 Detail Buku</a>
+                <a href="{{ route('detail-buku.index') }}">
+                    📖 Detail Buku
+                </a>
             </li>
 
             <li>
-                <a href="#">🔄 Peminjaman</a>
+                <a href="{{ route('peminjaman.index') }}">
+                    🔄 Peminjaman
+                </a>
             </li>
 
             <li>
-                <a href="#">📊 Laporan</a>
+                <a href="#">
+                    📊 Laporan
+                </a>
             </li>
+
         </ul>
 
-        <form action="{{ route('logout') }}" method="POST" class="logout">
+        <form
+            action="{{ route('logout') }}"
+            method="POST"
+            class="logout"
+        >
             @csrf
-            <button type="submit">🚪 Logout</button>
+
+            <button type="submit">
+                🚪 Logout
+            </button>
         </form>
 
     </aside>
@@ -214,7 +265,10 @@
 
             <div>
                 <h1>Dashboard Admin</h1>
-                <p>Selamat datang di Sistem Informasi Perpustakaan.</p>
+
+                <p>
+                    Selamat datang di Sistem Informasi Perpustakaan.
+                </p>
             </div>
 
             <div class="admin-name">
@@ -227,27 +281,62 @@
         <div class="cards">
 
             <div class="card">
-                <div class="card-icon">📚</div>
+
+                <div class="card-icon">
+                    📚
+                </div>
+
                 <h3>Total Buku</h3>
-                <div class="number">{{ $totalBuku }}</div>
+
+                <div class="number">
+                    {{ $totalBuku }}
+                </div>
+
             </div>
 
+
             <div class="card">
-                <div class="card-icon">👥</div>
+
+                <div class="card-icon">
+                    👥
+                </div>
+
                 <h3>Total Anggota</h3>
-                <div class="number">{{ $totalAnggota }}</div>
+
+                <div class="number">
+                    {{ $totalAnggota }}
+                </div>
+
             </div>
 
+
             <div class="card">
-                <div class="card-icon">📖</div>
+
+                <div class="card-icon">
+                    📖
+                </div>
+
                 <h3>Buku Dipinjam</h3>
-                <div class="number">0</div>
+
+                <div class="number">
+                    0
+                </div>
+
             </div>
 
+
             <div class="card">
-                <div class="card-icon">🔄</div>
+
+                <div class="card-icon">
+                    🔄
+                </div>
+
                 <h3>Peminjaman</h3>
-                <div class="number">0</div>
+
+                <div class="number">
+                    0
+                </div>
+
             </div>
 
         </div>
@@ -255,7 +344,9 @@
 
         <div class="content">
 
-            <h2>Selamat Datang, {{ Auth::user()->nama }} 👋</h2>
+            <h2>
+                Selamat Datang, {{ Auth::user()->nama }} 👋
+            </h2>
 
             <p>
                 Gunakan menu di sebelah kiri untuk mengelola
