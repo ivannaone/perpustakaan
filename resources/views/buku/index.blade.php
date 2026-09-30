@@ -143,7 +143,7 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 850px;
+            min-width: 950px;
         }
 
         th {
@@ -178,6 +178,20 @@
             cursor: pointer;
             font-size: 14px;
             font-weight: 600;
+            margin-right: 8px;
+        }
+
+        .action-generate {
+            color: #16a34a;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .action-generate:hover {
+            color: #15803d;
         }
 
         .empty {
@@ -423,7 +437,22 @@
                                     >
                                         Hapus
                                     </button>
+                                </form>
 
+                                <form
+                                    action="{{ route('detail-buku.generate', $item->id_buku) }}"
+                                    method="POST"
+                                    style="display: inline;"
+                                >
+                                    @csrf
+
+                                    <button
+                                        type="submit"
+                                        class="action-generate"
+                                        onclick="return confirm('Generate detail buku sebanyak {{ $item->jumlah }} eksemplar?')"
+                                    >
+                                        Generate
+                                    </button>
                                 </form>
 
                             </td>

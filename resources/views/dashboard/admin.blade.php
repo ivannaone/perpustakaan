@@ -229,13 +229,13 @@
             <div class="card">
                 <div class="card-icon">📚</div>
                 <h3>Total Buku</h3>
-                <div class="number">0</div>
+                <div class="number">{{ $totalBuku }}</div>
             </div>
 
             <div class="card">
                 <div class="card-icon">👥</div>
                 <h3>Total Anggota</h3>
-                <div class="number">0</div>
+                <div class="number">{{ $totalAnggota }}</div>
             </div>
 
             <div class="card">
