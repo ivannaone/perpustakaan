@@ -184,7 +184,7 @@
             </li>
 
             <li>
-                <a href="#">📚 Data Buku</a>
+                <a href="{{ route('buku.index') }}">📚 Data Buku</a>
             </li>
 
             <li>

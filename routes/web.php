@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AnggotaController;
+use App\Http\Controllers\BukuController;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -31,9 +32,15 @@ Route::get('/user/dashboard', function () {
     return view('dashboard.user');
 })->middleware(['auth', 'role:user'])->name('user.dashboard');
 
+
+
 Route::middleware(['auth', 'role:admin'])->group(function () {
+
     Route::resource('anggota', AnggotaController::class)
-    ->parameters([
-        'anggota' => 'anggota'
-    ]);
+        ->parameters([
+            'anggota' => 'anggota'
+        ]);
+
+    Route::resource('buku', BukuController::class);
+
 });
