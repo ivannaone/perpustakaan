@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AnggotaController;
 use App\Http\Controllers\BukuController;
+use App\Http\Controllers\DetailBukuController;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -25,7 +26,13 @@ Route::post('/logout', [AuthController::class, 'logout'])
     ->name('logout');
 
 Route::get('/admin/dashboard', function () {
-    return view('dashboard.admin');
+    $totalBuku = \App\Models\Buku::count();
+    $totalAnggota = \App\Models\Anggota::count();
+
+    return view('dashboard.admin', compact(
+        'totalBuku',
+        'totalAnggota'
+    ));
 })->middleware(['auth', 'role:admin'])->name('admin.dashboard');
 
 Route::get('/user/dashboard', function () {
@@ -45,4 +52,9 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         ->name('buku.import');
 
     Route::resource('buku', BukuController::class);
+
+    Route::post('/detail-buku/generate/{buku}', [DetailBukuController::class, 'generate'])
+    ->name('detail-buku.generate');
+
+    Route::resource('detail-buku', DetailBukuController::class);
 });
