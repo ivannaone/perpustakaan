@@ -54,6 +54,13 @@
             font-size: 24px;
         }
 
+        .top-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
         .button {
             display: inline-block;
             padding: 10px 16px;
@@ -75,6 +82,21 @@
 
         .button-back:hover {
             background: #475569;
+        }
+
+        .import-form {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .import-form input[type="file"] {
+            padding: 8px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            background: white;
+            font-size: 14px;
         }
 
         .success {
@@ -168,7 +190,15 @@
             margin-top: 20px;
         }
 
-        @media (max-width: 600px) {
+        .error {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 700px) {
             .header {
                 padding: 15px 20px;
             }
@@ -181,8 +211,29 @@
                 margin-top: 20px;
             }
 
+            .top-section {
+                align-items: flex-start;
+            }
+
             .top-section h2 {
                 font-size: 20px;
+            }
+
+            .top-actions {
+                width: 100%;
+            }
+
+            .import-form {
+                width: 100%;
+            }
+
+            .import-form input[type="file"] {
+                width: 100%;
+            }
+
+            .import-form .button {
+                width: 100%;
+                text-align: center;
             }
 
             .search-form {
@@ -206,9 +257,11 @@
     <div class="container">
 
         <div class="top-section">
+
             <h2>Data Buku</h2>
 
-            <div>
+            <div class="top-actions">
+
                 <a href="{{ route('admin.dashboard') }}" class="button button-back">
                     ← Dashboard
                 </a>
@@ -216,7 +269,33 @@
                 <a href="{{ route('buku.create') }}" class="button">
                     + Tambah Buku
                 </a>
+
+                <form
+                    action="{{ route('buku.import') }}"
+                    method="POST"
+                    enctype="multipart/form-data"
+                    class="import-form"
+                >
+                    @csrf
+
+                    <input
+                        type="file"
+                        name="file"
+                        accept=".xlsx,.xls,.csv"
+                        required
+                    >
+
+                    <button
+                        type="submit"
+                        class="button"
+                        style="cursor: pointer;"
+                    >
+                        📥 Import Excel
+                    </button>
+                </form>
+
             </div>
+
         </div>
 
         @if (session('success'))
@@ -225,8 +304,25 @@
             </div>
         @endif
 
+        @if ($errors->any())
+            <div class="error">
+                <strong>Import gagal:</strong>
+
+                <ul style="margin-top: 8px; margin-left: 20px;">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <div class="search-box">
-            <form action="{{ route('buku.index') }}" method="GET" class="search-form">
+
+            <form
+                action="{{ route('buku.index') }}"
+                method="GET"
+                class="search-form"
+            >
 
                 <input
                     type="text"
@@ -240,17 +336,22 @@
                 </button>
 
                 @if ($search)
-                    <a href="{{ route('buku.index') }}" class="button button-back">
+                    <a
+                        href="{{ route('buku.index') }}"
+                        class="button button-back"
+                    >
                         Reset
                     </a>
                 @endif
 
             </form>
+
         </div>
 
         <div class="table-wrapper">
 
             <table>
+
                 <thead>
                     <tr>
                         <th>No</th>
@@ -269,6 +370,7 @@
                     @forelse ($buku as $item)
 
                         <tr>
+
                             <td>
                                 {{ $buku->firstItem() + $loop->index }}
                             </td>
@@ -298,6 +400,7 @@
                             </td>
 
                             <td>
+
                                 <a
                                     href="{{ route('buku.edit', $item->id_buku) }}"
                                     class="action-edit"
@@ -320,8 +423,11 @@
                                     >
                                         Hapus
                                     </button>
+
                                 </form>
+
                             </td>
+
                         </tr>
 
                     @empty
@@ -335,6 +441,7 @@
                     @endforelse
 
                 </tbody>
+
             </table>
 
         </div>

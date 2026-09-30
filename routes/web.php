@@ -41,6 +41,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
             'anggota' => 'anggota'
         ]);
 
-    Route::resource('buku', BukuController::class);
+    Route::post('/buku/import', [BukuController::class, 'import'])
+        ->name('buku.import');
 
+    Route::resource('buku', BukuController::class);
 });

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Buku;
+use App\Imports\BukuImport;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class BukuController extends Controller
 {
@@ -45,6 +47,21 @@ class BukuController extends Controller
 
         return redirect()->route('buku.index')
             ->with('success', 'Data buku berhasil ditambahkan.');
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls,csv|max:2048',
+        ]);
+
+        Excel::import(
+            new BukuImport,
+            $request->file('file')
+        );
+
+        return redirect()->route('buku.index')
+            ->with('success', 'Data buku berhasil diimport dari Excel.');
     }
 
     public function edit(Buku $buku)
