@@ -32,5 +32,8 @@ Route::get('/user/dashboard', function () {
 })->middleware(['auth', 'role:user'])->name('user.dashboard');
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
-    Route::resource('anggota', AnggotaController::class);
+    Route::resource('anggota', AnggotaController::class)
+    ->parameters([
+        'anggota' => 'anggota'
+    ]);
 });
