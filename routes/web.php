@@ -6,6 +6,7 @@ use App\Http\Controllers\AnggotaController;
 use App\Http\Controllers\BukuController;
 use App\Http\Controllers\DetailBukuController;
 use App\Http\Controllers\PeminjamanController;
+use App\Http\Controllers\LaporanController;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -69,4 +70,13 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
             'store',
             'destroy'
         ]);
+
+    Route::get('/laporan', [LaporanController::class, 'index'])
+    ->name('laporan.index');
+
+    Route::get('/laporan/peminjaman', [LaporanController::class, 'peminjaman'])
+        ->name('laporan.peminjaman');
+
+    Route::get('/laporan/peminjaman/excel', [LaporanController::class, 'excel'])
+    ->name('laporan.peminjaman.excel');
 });
