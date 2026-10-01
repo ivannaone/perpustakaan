@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,7 +16,7 @@
 
         body {
             font-family: Arial, sans-serif;
-            background: #f4f7fb;
+            background: #f1f5f9;
             color: #1e293b;
         }
 
@@ -42,35 +43,40 @@
             padding: 0 20px;
         }
 
-        .top-bar {
+        .top {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-bottom: 20px;
             gap: 15px;
-            margin-bottom: 25px;
-            flex-wrap: wrap;
         }
 
-        .top-bar h2 {
-            font-size: 24px;
+        .top-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
         }
 
-        .btn {
-            display: inline-block;
-            padding: 10px 16px;
-            border-radius: 8px;
+        .back-button {
+            width: 46px;
+            height: 46px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #64748b;
+            color: white;
             text-decoration: none;
-            font-size: 14px;
-            font-weight: 600;
+            border-radius: 9px;
+            font-size: 25px;
+            line-height: 1;
         }
 
-        .btn-dashboard {
-            background: #e2e8f0;
-            color: #334155;
+        .back-button:hover {
+            background: #475569;
         }
 
-        .btn-dashboard:hover {
-            background: #cbd5e1;
+        .top h2 {
+            font-size: 24px;
         }
 
         .report-card {
@@ -78,7 +84,7 @@
             border-radius: 14px;
             padding: 25px;
             margin-bottom: 25px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         }
 
         .report-card h3 {
@@ -129,7 +135,7 @@
             background: white;
             border-radius: 14px;
             overflow-x: auto;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         }
 
         table {
@@ -147,8 +153,8 @@
         }
 
         th {
-            background: #f8fafc;
-            color: #475569;
+            background: #eff6ff;
+            color: #1e40af;
         }
 
         tr:hover td {
@@ -179,26 +185,50 @@
             color: #64748b;
         }
 
-        @media (max-width: 600px) {
+        @media (max-width: 700px) {
             .header {
-                padding: 16px 20px;
+                padding: 15px;
             }
 
             .header h1 {
                 font-size: 18px;
+                line-height: 1.3;
+            }
+
+            .header span {
+                font-size: 13px;
             }
 
             .container {
                 margin: 20px auto;
+                padding: 0 20px;
             }
 
-            .top-bar h2 {
-                font-size: 20px;
+            .top {
+                align-items: flex-start;
             }
 
-            .btn-dashboard {
-                width: 100%;
-                text-align: center;
+            .top-left {
+                gap: 12px;
+                align-items: center;
+            }
+
+            .back-button {
+                width: 46px;
+                height: 46px;
+                flex-shrink: 0;
+            }
+
+            .top h2 {
+                font-size: 22px;
+            }
+
+            .report-card {
+                padding: 20px;
+            }
+
+            .report-card h3 {
+                font-size: 18px;
             }
 
             .report-buttons {
@@ -210,6 +240,39 @@
                 width: 100%;
                 text-align: center;
             }
+
+            .table-wrapper {
+                border-radius: 12px;
+            }
+        }
+
+        @media (max-width: 450px) {
+            .header {
+                padding: 15px;
+            }
+
+            .header h1 {
+                font-size: 17px;
+                max-width: 210px;
+            }
+
+            .container {
+                padding: 0 15px;
+            }
+
+            .top h2 {
+                font-size: 20px;
+            }
+
+            .back-button {
+                width: 44px;
+                height: 44px;
+                font-size: 23px;
+            }
+
+            .report-card {
+                padding: 18px;
+            }
         }
     </style>
 </head>
@@ -218,17 +281,24 @@
 
     <div class="header">
         <h1>Sistem Informasi Perpustakaan</h1>
+
         <span>{{ Auth::user()->nama }}</span>
     </div>
 
     <div class="container">
 
-        <div class="top-bar">
-            <h2>Laporan Perpustakaan</h2>
+        <div class="top">
 
-            <a href="{{ route('admin.dashboard') }}" class="btn btn-dashboard">
-                Dashboard
-            </a>
+            <div class="top-left">
+
+                <a href="{{ route('admin.dashboard') }}" class="back-button">
+                    ←
+                </a>
+
+                <h2>Laporan Perpustakaan</h2>
+
+            </div>
+
         </div>
 
         <div class="report-card">
@@ -262,11 +332,12 @@
 
         <div class="table-wrapper">
 
-            @if($peminjaman->count() > 0)
+            @if ($peminjaman->count() > 0)
 
                 <table>
 
                     <thead>
+
                         <tr>
                             <th>No</th>
                             <th>ID Pinjam</th>
@@ -277,11 +348,12 @@
                             <th>Tanggal Kembali</th>
                             <th>Status</th>
                         </tr>
+
                     </thead>
 
                     <tbody>
 
-                        @foreach($peminjaman as $item)
+                        @foreach ($peminjaman as $item)
 
                             <tr>
 
@@ -315,7 +387,7 @@
 
                                 <td>
 
-                                    @if($item->status === 'dipinjam')
+                                    @if ($item->status === 'dipinjam')
 
                                         <span class="status status-dipinjam">
                                             Dipinjam
@@ -352,4 +424,5 @@
     </div>
 
 </body>
+
 </html>

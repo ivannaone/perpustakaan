@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Peminjaman - Sistem Informasi Perpustakaan</title>
 
     <style>
@@ -10,10 +12,10 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+            font-family: Arial, sans-serif;
         }
 
         body {
-            font-family: Arial, sans-serif;
             background: #f4f7fb;
             color: #1e293b;
         }
@@ -47,11 +49,34 @@
             align-items: center;
             gap: 15px;
             margin-bottom: 20px;
-            flex-wrap: wrap;
+        }
+
+        .top-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
         }
 
         .top-bar h2 {
             font-size: 24px;
+        }
+
+        .back-button {
+            width: 55px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #64748b;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 25px;
+            line-height: 1;
+        }
+
+        .back-button:hover {
+            background: #475569;
         }
 
         .buttons {
@@ -71,11 +96,6 @@
             cursor: pointer;
         }
 
-        .btn-dashboard {
-            background: #e2e8f0;
-            color: #334155;
-        }
-
         .btn-pdf {
             background: #dc2626;
             color: white;
@@ -88,6 +108,10 @@
         .btn-add {
             background: #2563eb;
             color: white;
+        }
+
+        .btn-add:hover {
+            background: #1d4ed8;
         }
 
         .search-box {
@@ -109,11 +133,20 @@
             border: 1px solid #cbd5e1;
             border-radius: 8px;
             outline: none;
+            font-size: 14px;
+        }
+
+        .search-form input:focus {
+            border-color: #2563eb;
         }
 
         .btn-search {
             background: #2563eb;
             color: white;
+        }
+
+        .btn-search:hover {
+            background: #1d4ed8;
         }
 
         .alert {
@@ -187,6 +220,10 @@
             font-size: 14px;
         }
 
+        .action-return:hover {
+            text-decoration: underline;
+        }
+
         .action-delete {
             color: #dc2626;
             background: none;
@@ -194,6 +231,10 @@
             cursor: pointer;
             font-weight: 600;
             font-size: 14px;
+        }
+
+        .action-delete:hover {
+            text-decoration: underline;
         }
 
         .pagination {
@@ -206,9 +247,9 @@
             color: #64748b;
         }
 
-        @media (max-width: 600px) {
+        @media (max-width: 700px) {
             .header {
-                padding: 16px 20px;
+                padding: 18px 20px;
             }
 
             .header h1 {
@@ -217,18 +258,26 @@
 
             .container {
                 margin: 20px auto;
+                padding: 0 20px;
+            }
+
+            .top-bar {
+                align-items: flex-start;
+                gap: 12px;
+            }
+
+            .top-left {
+                gap: 10px;
             }
 
             .top-bar h2 {
-                font-size: 20px;
+                font-size: 22px;
             }
 
-            .search-form {
-                flex-direction: column;
-            }
-
-            .search-form button {
-                width: 100%;
+            .back-button {
+                width: 48px;
+                height: 42px;
+                font-size: 23px;
             }
 
             .buttons {
@@ -239,6 +288,59 @@
                 flex: 1;
                 text-align: center;
             }
+
+            .search-form {
+                flex-direction: column;
+            }
+
+            .search-form button {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header {
+                padding: 16px 18px;
+            }
+
+            .header h1 {
+                font-size: 17px;
+            }
+
+            .header span {
+                font-size: 13px;
+            }
+
+            .container {
+                padding: 0 15px;
+            }
+
+            .top-bar {
+                flex-direction: column;
+            }
+
+            .top-left {
+                width: 100%;
+            }
+
+            .top-bar h2 {
+                font-size: 21px;
+            }
+
+            .back-button {
+                width: 45px;
+                height: 40px;
+                font-size: 22px;
+            }
+
+            .buttons {
+                width: 100%;
+            }
+
+            .btn {
+                padding: 10px 12px;
+                font-size: 13px;
+            }
         }
     </style>
 </head>
@@ -246,44 +348,67 @@
 <body>
 
     <div class="header">
+
         <h1>Sistem Informasi Perpustakaan</h1>
+
         <span>{{ Auth::user()->nama }}</span>
+
     </div>
 
     <div class="container">
 
         <div class="top-bar">
-            <h2>Data Peminjaman</h2>
+
+            <div class="top-left">
+
+                <a
+                    href="{{ route('admin.dashboard') }}"
+                    class="back-button"
+                    title="Kembali"
+                >
+                    ←
+                </a>
+
+                <h2>Data Peminjaman</h2>
+
+            </div>
 
             <div class="buttons">
 
-                <a href="{{ route('admin.dashboard') }}" class="btn btn-dashboard">
-                    Dashboard
-                </a>
-
-                <a href="{{ route('laporan.peminjaman') }}" class="btn btn-pdf">
+                <a
+                    href="{{ route('laporan.peminjaman') }}"
+                    class="btn btn-pdf"
+                >
                     📄 Cetak PDF
                 </a>
 
-                <a href="{{ route('peminjaman.create') }}" class="btn btn-add">
+                <a
+                    href="{{ route('peminjaman.create') }}"
+                    class="btn btn-add"
+                >
                     + Tambah Peminjaman
                 </a>
 
             </div>
+
         </div>
 
         @if(session('success'))
+
             <div class="alert">
                 {{ session('success') }}
             </div>
+
         @endif
 
         <div class="search-box">
+
             <form
                 action="{{ route('peminjaman.index') }}"
                 method="GET"
                 class="search-form"
             >
+
                 <input
                     type="text"
                     name="search"
@@ -291,10 +416,15 @@
                     placeholder="Cari ID peminjaman, nama anggota, atau nomor buku..."
                 >
 
-                <button type="submit" class="btn btn-search">
-                    Cari
+                <button
+                    type="submit"
+                    class="btn btn-search"
+                >
+                    🔎 Cari
                 </button>
+
             </form>
+
         </div>
 
         <div class="table-wrapper">
@@ -302,7 +432,9 @@
             @if($peminjaman->count() > 0)
 
                 <table>
+
                     <thead>
+
                         <tr>
                             <th>No</th>
                             <th>ID Pinjam</th>
@@ -314,6 +446,7 @@
                             <th>Tanggal Kembali</th>
                             <th>Aksi</th>
                         </tr>
+
                     </thead>
 
                     <tbody>
@@ -378,6 +511,7 @@
                                                 action="{{ route('peminjaman.return', $item->id_pinjam) }}"
                                                 method="POST"
                                             >
+
                                                 @csrf
 
                                                 <button
@@ -387,6 +521,7 @@
                                                 >
                                                     Kembalikan
                                                 </button>
+
                                             </form>
 
                                         @endif
@@ -395,7 +530,9 @@
                                             action="{{ route('peminjaman.destroy', $item->id_pinjam) }}"
                                             method="POST"
                                         >
+
                                             @csrf
+
                                             @method('DELETE')
 
                                             <button
@@ -405,6 +542,7 @@
                                             >
                                                 Hapus
                                             </button>
+
                                         </form>
 
                                     </div>
@@ -416,10 +554,13 @@
                         @endforeach
 
                     </tbody>
+
                 </table>
 
                 <div class="pagination">
+
                     {{ $peminjaman->links() }}
+
                 </div>
 
             @else
@@ -435,4 +576,5 @@
     </div>
 
 </body>
+
 </html>

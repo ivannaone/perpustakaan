@@ -1,18 +1,19 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Buku - Sistem Informasi Perpustakaan</title>
+
+    <title>Data Buku - Perpustakaan</title>
 
     <style>
         * {
             box-sizing: border-box;
-            margin: 0;
-            padding: 0;
         }
 
         body {
+            margin: 0;
             font-family: Arial, sans-serif;
             background: #f1f5f9;
             color: #1e293b;
@@ -21,13 +22,14 @@
         .header {
             background: #2563eb;
             color: white;
-            padding: 18px 30px;
+            padding: 20px 30px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .header h1 {
+        .header h2 {
+            margin: 0;
             font-size: 22px;
         }
 
@@ -41,62 +43,88 @@
             padding: 0 20px;
         }
 
-        .top-section {
+        .top {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
             gap: 15px;
-            flex-wrap: wrap;
+            margin-bottom: 25px;
         }
 
-        .top-section h2 {
-            font-size: 24px;
-        }
-
-        .top-actions {
+        .back-button {
+            width: 48px;
+            height: 48px;
             display: flex;
-            gap: 10px;
             align-items: center;
-            flex-wrap: wrap;
-        }
-
-        .button {
-            display: inline-block;
-            padding: 10px 16px;
-            background: #2563eb;
+            justify-content: center;
+            background: #64748b;
             color: white;
             text-decoration: none;
             border-radius: 8px;
-            border: none;
-            font-size: 14px;
+            font-size: 25px;
+            flex-shrink: 0;
         }
 
-        .button:hover {
+        .back-button:hover {
+            background: #475569;
+        }
+
+        .top h1 {
+            margin: 0;
+            font-size: 30px;
+            flex: 1;
+        }
+
+        .add-button {
+            display: inline-block;
+            padding: 12px 16px;
+            border-radius: 8px;
+            text-decoration: none;
+            color: white;
+            background: #2563eb;
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .add-button:hover {
             background: #1d4ed8;
         }
 
-        .button-back {
-            background: #64748b;
-        }
-
-        .button-back:hover {
-            background: #475569;
+        .import-box {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         }
 
         .import-form {
             display: flex;
-            gap: 8px;
+            gap: 10px;
             align-items: center;
-            flex-wrap: wrap;
         }
 
-        .import-form input[type="file"] {
-            padding: 8px;
+        .file-input {
+            flex: 1;
+            min-width: 0;
+            padding: 10px;
             border: 1px solid #d1d5db;
             border-radius: 8px;
             background: white;
+        }
+
+        .import-button {
+            padding: 11px 18px;
+            border: none;
+            border-radius: 8px;
+            background: #2563eb;
+            color: white;
+            cursor: pointer;
             font-size: 14px;
+            white-space: nowrap;
+        }
+
+        .import-button:hover {
+            background: #1d4ed8;
         }
 
         .success {
@@ -107,37 +135,56 @@
             margin-bottom: 20px;
         }
 
-        .search-box {
-            background: white;
-            padding: 18px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-        }
-
-        .search-form {
+        .search {
             display: flex;
             gap: 10px;
+            margin-bottom: 20px;
         }
 
-        .search-form input {
+        .search input {
             flex: 1;
-            padding: 11px 14px;
+            padding: 12px 14px;
             border: 1px solid #d1d5db;
             border-radius: 8px;
-            outline: none;
             font-size: 14px;
+            outline: none;
+            min-width: 0;
         }
 
-        .search-form input:focus {
+        .search input:focus {
             border-color: #2563eb;
+        }
+
+        .search button,
+        .reset-button {
+            padding: 12px 18px;
+            border: none;
+            border-radius: 8px;
+            background: #2563eb;
+            color: white;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+
+        .search button:hover {
+            background: #1d4ed8;
+        }
+
+        .reset-button {
+            background: #64748b;
+        }
+
+        .reset-button:hover {
+            background: #475569;
         }
 
         .table-wrapper {
             background: white;
-            border-radius: 10px;
+            border-radius: 12px;
             overflow-x: auto;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         }
 
         table {
@@ -146,45 +193,50 @@
             min-width: 950px;
         }
 
-        th {
-            background: #eff6ff;
-            color: #1e40af;
-            padding: 14px;
+        th,
+        td {
+            padding: 14px 15px;
+            border-bottom: 1px solid #e5e7eb;
             text-align: left;
             font-size: 14px;
         }
 
-        td {
-            padding: 13px 14px;
-            border-top: 1px solid #e5e7eb;
-            font-size: 14px;
+        th {
+            background: #eff6ff;
+            color: #1e40af;
         }
 
-        tr:hover {
+        tr:hover td {
             background: #f8fafc;
         }
 
         .action-edit {
             color: #2563eb;
             text-decoration: none;
-            margin-right: 8px;
-            font-weight: 600;
+            margin-right: 10px;
+        }
+
+        .action-edit:hover {
+            text-decoration: underline;
         }
 
         .action-delete {
             color: #dc2626;
-            background: none;
             border: none;
+            background: none;
             cursor: pointer;
             font-size: 14px;
-            font-weight: 600;
-            margin-right: 8px;
+            margin-right: 10px;
+        }
+
+        .action-delete:hover {
+            text-decoration: underline;
         }
 
         .action-generate {
             color: #16a34a;
-            background: none;
             border: none;
+            background: none;
             cursor: pointer;
             font-size: 14px;
             font-weight: 600;
@@ -196,7 +248,7 @@
 
         .empty {
             text-align: center;
-            padding: 30px;
+            padding: 35px;
             color: #64748b;
         }
 
@@ -204,58 +256,93 @@
             margin-top: 20px;
         }
 
-        .error {
-            background: #fee2e2;
-            color: #991b1b;
-            padding: 12px 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-        }
-
         @media (max-width: 700px) {
             .header {
-                padding: 15px 20px;
+                padding: 15px;
             }
 
-            .header h1 {
+            .header h2 {
                 font-size: 18px;
+            }
+
+            .header span {
+                font-size: 13px;
             }
 
             .container {
                 margin-top: 20px;
+                padding: 0 15px;
             }
 
-            .top-section {
-                align-items: flex-start;
+            .top {
+                gap: 12px;
+                margin-bottom: 20px;
+                align-items: center;
             }
 
-            .top-section h2 {
-                font-size: 20px;
+            .back-button {
+                width: 46px;
+                height: 46px;
+                font-size: 24px;
             }
 
-            .top-actions {
-                width: 100%;
+            .top h1 {
+                font-size: 28px;
+                line-height: 1.15;
+            }
+
+            .add-button {
+                padding: 11px 13px;
+                font-size: 14px;
+                max-width: 125px;
+                line-height: 1.2;
+            }
+
+            .import-box {
+                padding: 18px;
             }
 
             .import-form {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .file-input,
+            .import-button {
                 width: 100%;
             }
 
-            .import-form input[type="file"] {
-                width: 100%;
-            }
-
-            .import-form .button {
-                width: 100%;
-                text-align: center;
-            }
-
-            .search-form {
+            .search {
                 flex-direction: column;
             }
 
-            .search-form .button {
-                text-align: center;
+            .search input,
+            .search button,
+            .reset-button {
+                width: 100%;
+            }
+
+            .table-wrapper {
+                border-radius: 12px;
+            }
+
+            th,
+            td {
+                padding: 13px 14px;
+            }
+        }
+
+        @media (max-width: 430px) {
+            .top {
+                align-items: flex-start;
+            }
+
+            .top h1 {
+                font-size: 26px;
+            }
+
+            .add-button {
+                max-width: 115px;
             }
         }
     </style>
@@ -264,51 +351,26 @@
 <body>
 
     <div class="header">
-        <h1>Sistem Informasi Perpustakaan</h1>
-        <span>{{ Auth::user()->nama }}</span>
+        <h2>📚 Sistem Informasi Perpustakaan</h2>
+
+        @auth
+            <span>{{ Auth::user()->nama }}</span>
+        @endauth
     </div>
 
     <div class="container">
 
-        <div class="top-section">
+        <div class="top">
 
-            <h2>Data Buku</h2>
+            <a href="{{ route('admin.dashboard') }}" class="back-button">
+                ←
+            </a>
 
-            <div class="top-actions">
+            <h1>Data Buku</h1>
 
-                <a href="{{ route('admin.dashboard') }}" class="button button-back">
-                    ← Dashboard
-                </a>
-
-                <a href="{{ route('buku.create') }}" class="button">
-                    + Tambah Buku
-                </a>
-
-                <form
-                    action="{{ route('buku.import') }}"
-                    method="POST"
-                    enctype="multipart/form-data"
-                    class="import-form"
-                >
-                    @csrf
-
-                    <input
-                        type="file"
-                        name="file"
-                        accept=".xlsx,.xls,.csv"
-                        required
-                    >
-
-                    <button
-                        type="submit"
-                        class="button"
-                        style="cursor: pointer;"
-                    >
-                        📥 Import Excel
-                    </button>
-                </form>
-
-            </div>
+            <a href="{{ route('buku.create') }}" class="add-button">
+                + Tambah Buku
+            </a>
 
         </div>
 
@@ -318,49 +380,53 @@
             </div>
         @endif
 
-        @if ($errors->any())
-            <div class="error">
-                <strong>Import gagal:</strong>
-
-                <ul style="margin-top: 8px; margin-left: 20px;">
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
-
-        <div class="search-box">
+        <div class="import-box">
 
             <form
-                action="{{ route('buku.index') }}"
-                method="GET"
-                class="search-form"
+                action="{{ route('buku.import') }}"
+                method="POST"
+                enctype="multipart/form-data"
+                class="import-form"
             >
 
+                @csrf
+
                 <input
-                    type="text"
-                    name="search"
-                    value="{{ $search ?? '' }}"
-                    placeholder="Cari ID buku, judul, pengarang, atau penerbit..."
+                    type="file"
+                    name="file"
+                    class="file-input"
+                    accept=".xlsx,.xls,.csv"
+                    required
                 >
 
-                <button type="submit" class="button">
-                    🔎 Cari
+                <button type="submit" class="import-button">
+                    📥 Import Excel
                 </button>
-
-                @if ($search)
-                    <a
-                        href="{{ route('buku.index') }}"
-                        class="button button-back"
-                    >
-                        Reset
-                    </a>
-                @endif
 
             </form>
 
         </div>
+
+        <form action="{{ route('buku.index') }}" method="GET" class="search">
+
+            <input
+                type="text"
+                name="search"
+                value="{{ $search ?? '' }}"
+                placeholder="Cari ID buku, judul, pengarang, atau penerbit..."
+            >
+
+            <button type="submit">
+                🔎 Cari
+            </button>
+
+            @if ($search)
+                <a href="{{ route('buku.index') }}" class="reset-button">
+                    Reset
+                </a>
+            @endif
+
+        </form>
 
         <div class="table-wrapper">
 
@@ -425,8 +491,9 @@
                                 <form
                                     action="{{ route('buku.destroy', $item->id_buku) }}"
                                     method="POST"
-                                    style="display: inline;"
+                                    style="display:inline;"
                                 >
+
                                     @csrf
                                     @method('DELETE')
 
@@ -437,13 +504,15 @@
                                     >
                                         Hapus
                                     </button>
+
                                 </form>
 
                                 <form
                                     action="{{ route('detail-buku.generate', $item->id_buku) }}"
                                     method="POST"
-                                    style="display: inline;"
+                                    style="display:inline;"
                                 >
+
                                     @csrf
 
                                     <button
@@ -453,6 +522,7 @@
                                     >
                                         Generate
                                     </button>
+
                                 </form>
 
                             </td>
@@ -482,4 +552,5 @@
     </div>
 
 </body>
+
 </html>
