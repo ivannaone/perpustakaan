@@ -237,7 +237,9 @@
             </li>
 
             <li>
-                <a href="{{ route('laporan.index') }}">📊 Laporan</a>
+                <a href="{{ route('laporan.index') }}">
+                    📊 Laporan
+                </a>
             </li>
 
         </ul>
@@ -278,6 +280,7 @@
 
         <div class="cards">
 
+            <!-- Total Buku -->
             <div class="card">
 
                 <div class="card-icon">
@@ -293,6 +296,7 @@
             </div>
 
 
+            <!-- Total Anggota -->
             <div class="card">
 
                 <div class="card-icon">
@@ -308,6 +312,7 @@
             </div>
 
 
+            <!-- Buku Dipinjam -->
             <div class="card">
 
                 <div class="card-icon">
@@ -317,22 +322,23 @@
                 <h3>Buku Dipinjam</h3>
 
                 <div class="number">
-                    0
+                    {{ $totalBukuDipinjam }}
                 </div>
 
             </div>
 
 
+            <!-- Total Peminjaman -->
             <div class="card">
 
                 <div class="card-icon">
                     🔄
                 </div>
 
-                <h3>Peminjaman</h3>
+                <h3>Total Peminjaman</h3>
 
                 <div class="number">
-                    0
+                    {{ $totalPeminjaman }}
                 </div>
 
             </div>
