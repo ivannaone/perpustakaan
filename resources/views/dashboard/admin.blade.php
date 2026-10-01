@@ -19,13 +19,17 @@
             color: #172033;
         }
 
+
         .sidebar {
             position: fixed;
+            left: 0;
+            top: 0;
             width: 250px;
             height: 100vh;
             background: #1d4ed8;
             color: white;
             padding: 30px 20px;
+            z-index: 1000;
         }
 
         .logo {
@@ -58,6 +62,52 @@
             color: white;
         }
 
+        .logout {
+            margin-top: 30px;
+        }
+
+        .logout button {
+            width: 100%;
+            border: none;
+            padding: 12px;
+            border-radius: 9px;
+            background: rgba(255,255,255,0.12);
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .logout button:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+
+        .menu-toggle {
+            display: none;
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            width: 42px;
+            height: 42px;
+            border: none;
+            border-radius: 10px;
+            background: #1d4ed8;
+            color: white;
+            font-size: 22px;
+            cursor: pointer;
+            z-index: 1100;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .overlay {
+            display: none;
+        }
+
+
+        /* =========================
+           MAIN
+        ========================= */
+
         .main {
             margin-left: 250px;
             padding: 35px;
@@ -86,6 +136,8 @@
             box-shadow: 0 5px 20px rgba(0,0,0,0.05);
             font-size: 14px;
         }
+
+
 
         .cards {
             display: grid;
@@ -116,6 +168,8 @@
             font-weight: bold;
         }
 
+
+
         .content {
             margin-top: 25px;
             background: white;
@@ -132,32 +186,19 @@
             color: #7b8494;
         }
 
-        .logout {
-            margin-top: 30px;
-        }
 
-        .logout button {
-            width: 100%;
-            border: none;
-            padding: 12px;
-            border-radius: 9px;
-            background: rgba(255,255,255,0.12);
-            color: white;
-            cursor: pointer;
-            font-size: 14px;
-        }
-
-        .logout button:hover {
-            background: rgba(255,255,255,0.2);
-        }
 
         @media (max-width: 1100px) {
+
             .cards {
                 grid-template-columns: repeat(2, 1fr);
             }
+
         }
 
+
         @media (max-width: 900px) {
+
             .sidebar {
                 width: 210px;
             }
@@ -165,40 +206,164 @@
             .main {
                 margin-left: 210px;
             }
+
         }
 
+
         @media (max-width: 650px) {
+
+            body {
+                overflow-x: hidden;
+            }
+
             .sidebar {
-                position: relative;
-                width: 100%;
-                height: auto;
+                position: fixed;
+                left: -270px;
+                top: 0;
+                width: 250px;
+                height: 100vh;
+                padding: 25px 18px;
+                transition: left 0.25s ease;
+                box-shadow: 5px 0 20px rgba(0,0,0,0.15);
+            }
+
+            .sidebar.open {
+                left: 0;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .overlay {
+                position: fixed;
+                inset: 0;
+                background: rgba(0,0,0,0.35);
+                z-index: 900;
+            }
+
+            .overlay.show {
+                display: block;
             }
 
             .main {
                 margin-left: 0;
-                padding: 20px;
+                padding: 75px 15px 25px;
             }
 
             .topbar {
+                margin-bottom: 22px;
+                gap: 12px;
                 align-items: flex-start;
-                gap: 15px;
-                flex-direction: column;
             }
 
-            .cards {
-                grid-template-columns: 1fr;
+            .topbar h1 {
+                font-size: 23px;
+            }
+
+            .topbar p {
+                font-size: 13px;
+                line-height: 1.5;
             }
 
             .admin-name {
-                width: 100%;
+                padding: 9px 12px;
+                font-size: 12px;
+                white-space: nowrap;
             }
+
+            .cards {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+
+            .card {
+                padding: 17px 15px;
+                border-radius: 12px;
+            }
+
+            .card-icon {
+                font-size: 23px;
+                margin-bottom: 9px;
+            }
+
+            .card h3 {
+                font-size: 12px;
+                margin-bottom: 6px;
+            }
+
+            .card .number {
+                font-size: 24px;
+            }
+
+            .content {
+                margin-top: 18px;
+                padding: 20px;
+                border-radius: 12px;
+            }
+
+            .content h2 {
+                font-size: 18px;
+                line-height: 1.4;
+            }
+
+            .content p {
+                font-size: 13px;
+                line-height: 1.5;
+            }
+
+        }
+
+
+        @media (max-width: 380px) {
+
+            .main {
+                padding-left: 12px;
+                padding-right: 12px;
+            }
+
+            .topbar h1 {
+                font-size: 21px;
+            }
+
+            .admin-name {
+                font-size: 11px;
+                padding: 8px 10px;
+            }
+
+            .card {
+                padding: 15px 12px;
+            }
+
+            .card-icon {
+                font-size: 21px;
+            }
+
+            .card .number {
+                font-size: 22px;
+            }
+
         }
     </style>
 </head>
 
 <body>
 
-    <aside class="sidebar">
+    <button
+        class="menu-toggle"
+        id="menuToggle"
+        type="button"
+        aria-label="Buka menu"
+    >
+        ☰
+    </button>
+
+    <div
+        class="overlay"
+        id="overlay"
+    ></div>
+
+    <aside class="sidebar" id="sidebar">
 
         <div class="logo">
             📚 Perpustakaan
@@ -258,7 +423,6 @@
 
     </aside>
 
-
     <main class="main">
 
         <div class="topbar">
@@ -277,10 +441,8 @@
 
         </div>
 
-
         <div class="cards">
 
-            <!-- Total Buku -->
             <div class="card">
 
                 <div class="card-icon">
@@ -296,7 +458,6 @@
             </div>
 
 
-            <!-- Total Anggota -->
             <div class="card">
 
                 <div class="card-icon">
@@ -312,7 +473,6 @@
             </div>
 
 
-            <!-- Buku Dipinjam -->
             <div class="card">
 
                 <div class="card-icon">
@@ -328,7 +488,6 @@
             </div>
 
 
-            <!-- Total Peminjaman -->
             <div class="card">
 
                 <div class="card-icon">
@@ -345,7 +504,6 @@
 
         </div>
 
-
         <div class="content">
 
             <h2>
@@ -360,6 +518,22 @@
         </div>
 
     </main>
+
+    <script>
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
+
+        menuToggle.addEventListener('click', function () {
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('show');
+        });
+
+        overlay.addEventListener('click', function () {
+            sidebar.classList.remove('open');
+            overlay.classList.remove('show');
+        });
+    </script>
 
 </body>
 </html>
