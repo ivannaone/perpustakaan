@@ -27,6 +27,24 @@ class BukuController extends Controller
         return view('buku.index', compact('buku', 'search'));
     }
 
+    public function katalog(Request $request)
+    {
+        $search = $request->input('search');
+
+        $buku = Buku::query()
+            ->when($search, function ($query) use ($search) {
+                $query->where('id_buku', 'like', "%{$search}%")
+                    ->orWhere('judul_buku', 'like', "%{$search}%")
+                    ->orWhere('pengarang', 'like', "%{$search}%")
+                    ->orWhere('penerbit', 'like', "%{$search}%");
+            })
+            ->latest()
+            ->paginate(12)
+            ->withQueryString();
+
+        return view('user.buku', compact('buku', 'search'));
+    }
+
     public function create()
     {
         return view('buku.create');
