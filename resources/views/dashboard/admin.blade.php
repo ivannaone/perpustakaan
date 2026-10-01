@@ -237,9 +237,7 @@
             </li>
 
             <li>
-                <a href="#">
-                    📊 Laporan
-                </a>
+                <a href="{{ route('laporan.index') }}">📊 Laporan</a>
             </li>
 
         </ul>

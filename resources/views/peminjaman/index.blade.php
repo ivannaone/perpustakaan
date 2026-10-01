@@ -76,6 +76,15 @@
             color: #334155;
         }
 
+        .btn-pdf {
+            background: #dc2626;
+            color: white;
+        }
+
+        .btn-pdf:hover {
+            background: #b91c1c;
+        }
+
         .btn-add {
             background: #2563eb;
             color: white;
@@ -221,6 +230,15 @@
             .search-form button {
                 width: 100%;
             }
+
+            .buttons {
+                width: 100%;
+            }
+
+            .buttons .btn {
+                flex: 1;
+                text-align: center;
+            }
         }
     </style>
 </head>
@@ -238,13 +256,19 @@
             <h2>Data Peminjaman</h2>
 
             <div class="buttons">
+
                 <a href="{{ route('admin.dashboard') }}" class="btn btn-dashboard">
                     Dashboard
+                </a>
+
+                <a href="{{ route('laporan.peminjaman') }}" class="btn btn-pdf">
+                    📄 Cetak PDF
                 </a>
 
                 <a href="{{ route('peminjaman.create') }}" class="btn btn-add">
                     + Tambah Peminjaman
                 </a>
+
             </div>
         </div>
 
@@ -255,7 +279,11 @@
         @endif
 
         <div class="search-box">
-            <form action="{{ route('peminjaman.index') }}" method="GET" class="search-form">
+            <form
+                action="{{ route('peminjaman.index') }}"
+                method="GET"
+                class="search-form"
+            >
                 <input
                     type="text"
                     name="search"
@@ -270,6 +298,7 @@
         </div>
 
         <div class="table-wrapper">
+
             @if($peminjaman->count() > 0)
 
                 <table>
@@ -288,8 +317,11 @@
                     </thead>
 
                     <tbody>
+
                         @foreach($peminjaman as $item)
+
                             <tr>
+
                                 <td>
                                     {{ $peminjaman->firstItem() + $loop->index }}
                                 </td>
@@ -299,7 +331,7 @@
                                 </td>
 
                                 <td>
-                                    {{ $item->tgl_pinjam?->format('d-m-Y') }}
+                                    {{ $item->tgl_pinjam?->format('d-m-Y') ?? '-' }}
                                 </td>
 
                                 <td>
@@ -315,15 +347,21 @@
                                 </td>
 
                                 <td>
+
                                     @if($item->status === 'dipinjam')
+
                                         <span class="status status-dipinjam">
                                             Dipinjam
                                         </span>
+
                                     @else
+
                                         <span class="status status-dikembalikan">
                                             Dikembalikan
                                         </span>
+
                                     @endif
+
                                 </td>
 
                                 <td>
@@ -331,9 +369,11 @@
                                 </td>
 
                                 <td>
+
                                     <div class="actions">
 
                                         @if($item->status === 'dipinjam')
+
                                             <form
                                                 action="{{ route('peminjaman.return', $item->id_pinjam) }}"
                                                 method="POST"
@@ -348,6 +388,7 @@
                                                     Kembalikan
                                                 </button>
                                             </form>
+
                                         @endif
 
                                         <form
@@ -367,9 +408,13 @@
                                         </form>
 
                                     </div>
+
                                 </td>
+
                             </tr>
+
                         @endforeach
+
                     </tbody>
                 </table>
 
@@ -384,6 +429,7 @@
                 </div>
 
             @endif
+
         </div>
 
     </div>
