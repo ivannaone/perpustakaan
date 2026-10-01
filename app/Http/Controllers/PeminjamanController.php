@@ -14,21 +14,35 @@ class PeminjamanController extends Controller
     {
         $search = $request->input('search');
 
-        $peminjaman = Peminjaman::with(['anggota', 'detailBuku.buku'])
+        $peminjaman = Peminjaman::with([
+            'anggota',
+            'detailBuku.buku'
+        ])
             ->when($search, function ($query) use ($search) {
                 $query->where('id_pinjam', 'like', "%{$search}%")
                     ->orWhereHas('anggota', function ($q) use ($search) {
-                        $q->where('nama_anggota', 'like', "%{$search}%");
+                        $q->where(
+                            'nama_anggota',
+                            'like',
+                            "%{$search}%"
+                        );
                     })
                     ->orWhereHas('detailBuku', function ($q) use ($search) {
-                        $q->where('no_buku', 'like', "%{$search}%");
+                        $q->where(
+                            'no_buku',
+                            'like',
+                            "%{$search}%"
+                        );
                     });
             })
             ->latest('tgl_pinjam')
             ->paginate(10)
             ->withQueryString();
 
-        return view('peminjaman.index', compact('peminjaman', 'search'));
+        return view(
+            'peminjaman.index',
+            compact('peminjaman', 'search')
+        );
     }
 
     public function create()
@@ -39,7 +53,10 @@ class PeminjamanController extends Controller
             ->where('status', 'ada')
             ->get();
 
-        return view('peminjaman.create', compact('anggota', 'buku'));
+        return view(
+            'peminjaman.create',
+            compact('anggota', 'buku')
+        );
     }
 
     public function store(Request $request)
@@ -53,7 +70,10 @@ class PeminjamanController extends Controller
 
         DB::transaction(function () use ($data) {
 
-            $detailBuku = DetailBuku::where('no_buku', $data['no_buku'])
+            $detailBuku = DetailBuku::where(
+                'no_buku',
+                $data['no_buku']
+            )
                 ->lockForUpdate()
                 ->first();
 
@@ -74,14 +94,21 @@ class PeminjamanController extends Controller
             ]);
         });
 
-        return redirect()->route('peminjaman.index')
-            ->with('success', 'Peminjaman berhasil dicatat.');
+        return redirect()
+            ->route('peminjaman.index')
+            ->with(
+                'success',
+                'Peminjaman berhasil dicatat.'
+            );
     }
 
     public function returnBook(Peminjaman $peminjaman)
     {
         if ($peminjaman->status === 'dikembalikan') {
-            return back()->with('success', 'Buku sudah dikembalikan.');
+            return back()->with(
+                'success',
+                'Buku sudah dikembalikan.'
+            );
         }
 
         DB::transaction(function () use ($peminjaman) {
@@ -96,15 +123,46 @@ class PeminjamanController extends Controller
             ]);
         });
 
-        return redirect()->route('peminjaman.index')
-            ->with('success', 'Buku berhasil dikembalikan.');
+        return redirect()
+            ->route('peminjaman.index')
+            ->with(
+                'success',
+                'Buku berhasil dikembalikan.'
+            );
     }
 
     public function destroy(Peminjaman $peminjaman)
     {
         $peminjaman->delete();
 
-        return redirect()->route('peminjaman.index')
-            ->with('success', 'Data peminjaman berhasil dihapus.');
+        return redirect()
+            ->route('peminjaman.index')
+            ->with(
+                'success',
+                'Data peminjaman berhasil dihapus.'
+            );
+    }
+
+    public function saya(Request $request)
+    {
+        $nama = $request->user()->nama;
+
+        $peminjaman = Peminjaman::with([
+            'anggota',
+            'detailBuku.buku'
+        ])
+            ->whereHas('anggota', function ($query) use ($nama) {
+                $query->where(
+                    'nama_anggota',
+                    $nama
+                );
+            })
+            ->latest('tgl_pinjam')
+            ->paginate(10);
+
+        return view(
+            'user.peminjaman',
+            compact('peminjaman')
+        );
     }
 }
