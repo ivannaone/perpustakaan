@@ -7,6 +7,7 @@ use App\Http\Controllers\BukuController;
 use App\Http\Controllers\DetailBukuController;
 use App\Http\Controllers\PeminjamanController;
 use App\Http\Controllers\LaporanController;
+use App\Http\Controllers\ProfileController;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -27,10 +28,7 @@ Route::post('/register', [AuthController::class, 'register'])
 Route::post('/logout', [AuthController::class, 'logout'])
     ->name('logout');
 
-
-
 Route::get('/admin/dashboard', function () {
-
     $totalBuku = \App\Models\Buku::count();
 
     $totalAnggota = \App\Models\Anggota::count();
@@ -48,20 +46,34 @@ Route::get('/admin/dashboard', function () {
         'totalPeminjaman',
         'totalBukuDipinjam'
     ));
-
 })->middleware(['auth', 'role:admin'])
   ->name('admin.dashboard');
 
-
-
 Route::get('/user/dashboard', function () {
-
     return view('dashboard.user');
-
 })->middleware(['auth', 'role:user'])
   ->name('user.dashboard');
 
+Route::get('/user/buku', [BukuController::class, 'katalog'])
+    ->middleware(['auth', 'role:user'])
+    ->name('user.buku');
 
+Route::get('/user/peminjaman', [PeminjamanController::class, 'saya'])
+    ->middleware(['auth', 'role:user'])
+    ->name('user.peminjaman');
+
+Route::get('/user/profil', [ProfileController::class, 'index'])
+    ->middleware(['auth', 'role:user'])
+    ->name('user.profile');
+
+Route::put('/user/profil', [ProfileController::class, 'update'])
+    ->middleware(['auth', 'role:user'])
+    ->name('user.profile.update');
+
+Route::get('/user/informasi', function () {
+    return view('user.informasi');
+})->middleware(['auth', 'role:user'])
+  ->name('user.informasi');
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
 
@@ -70,12 +82,10 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
             'anggota' => 'anggota'
         ]);
 
-
     Route::post('/buku/import', [BukuController::class, 'import'])
         ->name('buku.import');
 
     Route::resource('buku', BukuController::class);
-
 
     Route::post(
         '/detail-buku/generate/{buku}',
@@ -83,7 +93,6 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     )->name('detail-buku.generate');
 
     Route::resource('detail-buku', DetailBukuController::class);
-
 
     Route::post(
         '/peminjaman/{peminjaman}/kembalikan',
@@ -97,7 +106,6 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
             'store',
             'destroy'
         ]);
-
 
     Route::get(
         '/laporan',
