@@ -338,7 +338,7 @@
                 Peminjaman Saya
             </a>
 
-            <a href="{{ route('user.informasi') }}">
+            <a href="{{ route('user.informasi') }}" class="active">
                 Informasi
             </a>
 

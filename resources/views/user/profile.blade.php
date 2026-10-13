@@ -466,7 +466,7 @@
                 </h2>
 
                 <p>
-                    @{{ Auth::user()->username }}
+                    @{{ auth()->user()->username }}
                 </p>
 
                 <span class="role">
