@@ -401,6 +401,14 @@
 
         @endif
 
+        @if(session('error'))
+
+            <div style="background:#fee2e2;color:#991b1b;padding:13px 16px;border-radius:8px;margin-bottom:20px;">
+                {{ session('error') }}
+            </div>
+
+        @endif
+
         <div class="search-box">
 
             <form

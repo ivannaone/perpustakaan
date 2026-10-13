@@ -155,6 +155,12 @@
                 Hanya buku dengan status <strong>Ada</strong> yang dapat dipinjam.
             </div>
 
+            @if(session('error'))
+                <div style="background:#fee2e2;color:#991b1b;padding:12px 14px;border-radius:8px;margin-bottom:18px;font-size:14px;">
+                    {{ session('error') }}
+                </div>
+            @endif
+
             <form action="{{ route('peminjaman.store') }}" method="POST">
                 @csrf
 

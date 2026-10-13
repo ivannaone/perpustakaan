@@ -380,6 +380,23 @@
             </div>
         @endif
 
+        @if (session('error'))
+            <div style="background:#fee2e2;color:#991b1b;padding:12px 15px;border-radius:8px;margin-bottom:20px;">
+                {{ session('error') }}
+            </div>
+        @endif
+
+        @if ($errors->any())
+            <div style="background:#fee2e2;color:#991b1b;padding:12px 15px;border-radius:8px;margin-bottom:20px;">
+                <strong>Terjadi kesalahan saat import:</strong>
+                <ul style="margin:8px 0 0 18px;">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <div class="import-box">
 
             <form

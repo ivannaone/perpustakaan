@@ -146,6 +146,18 @@
 
             <h2>Edit Data Buku</h2>
 
+            @if(session('success'))
+                <div style="background:#dcfce7;color:#166534;padding:12px 14px;border-radius:8px;margin-bottom:20px;font-size:14px;">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            @if(session('error'))
+                <div style="background:#fee2e2;color:#991b1b;padding:12px 14px;border-radius:8px;margin-bottom:20px;font-size:14px;">
+                    {{ session('error') }}
+                </div>
+            @endif
+
             <form
                 action="{{ route('buku.update', ['buku' => $buku->id_buku]) }}"
                 method="POST"

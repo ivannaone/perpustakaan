@@ -51,7 +51,16 @@ Route::get('/admin/dashboard', function () {
   ->name('admin.dashboard');
 
 Route::get('/user/dashboard', function () {
-    return view('dashboard.user');
+    $bukuTerbaru = \App\Models\Buku::withCount([
+        'detailBuku as stok_tersedia' => function ($q) {
+            $q->where('status', 'ada');
+        },
+    ])
+    ->latest()
+    ->take(4)
+    ->get();
+
+    return view('dashboard.user', compact('bukuTerbaru'));
 })->middleware(['auth', 'role:user'])
   ->name('user.dashboard');
 

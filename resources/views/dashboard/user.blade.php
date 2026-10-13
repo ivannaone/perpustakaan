@@ -584,88 +584,41 @@
 
         <div class="books">
 
-            <div class="book-card">
+            @forelse($bukuTerbaru as $item)
 
-                <div class="book-cover">
-                    📘
+                <div class="book-card">
+
+                    <div class="book-cover">
+                        📖
+                    </div>
+
+                    <h3>
+                        {{ $item->judul_buku }}
+                    </h3>
+
+                    <p>
+                        {{ $item->pengarang }} · {{ $item->penerbit ?? '-' }}
+                    </p>
+
+                    @if($item->stok_tersedia > 0)
+                        <span class="available">
+                            Tersedia · {{ $item->stok_tersedia }} eksemplar
+                        </span>
+                    @else
+                        <span style="display:inline-block;font-size:11px;color:#b91c1c;background:#fee2e2;padding:5px 8px;border-radius:5px;">
+                            Stok Habis
+                        </span>
+                    @endif
+
                 </div>
 
-                <h3>
-                    Pemrograman Web
-                </h3>
+            @empty
 
-                <p>
-                    Andi · Informatika
-                </p>
-
-                <span class="available">
-                    Tersedia
-                </span>
-
-            </div>
-
-
-            <div class="book-card">
-
-                <div class="book-cover">
-                    📗
+                <div class="book-card" style="grid-column:1/-1;text-align:center;padding:30px;color:#6b7280;">
+                    Belum ada data buku.
                 </div>
 
-                <h3>
-                    Basis Data
-                </h3>
-
-                <p>
-                    Budi · Erlangga
-                </p>
-
-                <span class="available">
-                    Tersedia
-                </span>
-
-            </div>
-
-
-            <div class="book-card">
-
-                <div class="book-cover">
-                    📙
-                </div>
-
-                <h3>
-                    Laravel Dasar
-                </h3>
-
-                <p>
-                    Sari · Elex Media
-                </p>
-
-                <span class="available">
-                    Tersedia
-                </span>
-
-            </div>
-
-
-            <div class="book-card">
-
-                <div class="book-cover">
-                    📕
-                </div>
-
-                <h3>
-                    Koleksi Perpustakaan
-                </h3>
-
-                <p>
-                    Berbagai pengarang
-                </p>
-
-                <span class="available">
-                    Tersedia
-                </span>
-
-            </div>
+            @endforelse
 
         </div>
 
