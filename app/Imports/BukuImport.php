@@ -10,6 +10,7 @@ class BukuImport implements WithMultipleSheets
     {
         return [
             'Data Buku' => new BukuSheetImport(),
+            0           => new BukuSheetImport(),
         ];
     }
 }

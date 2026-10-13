@@ -204,12 +204,12 @@ class PeminjamanController extends Controller
                 }
 
                 $lastId = Peminjaman::lockForUpdate()
-                    ->orderByDesc('id_pinjam')
+                    ->orderByRaw('CAST(SUBSTRING(id_pinjam, 2) AS UNSIGNED) DESC')
                     ->value('id_pinjam');
 
                 $nextNumber = 1;
                 if ($lastId) {
-                    $nextNumber = ((int) ltrim($lastId, 'P')) + 1;
+                    $nextNumber = ((int) substr($lastId, 1)) + 1;
                 }
 
                 $idPinjam = 'P' . str_pad($nextNumber, 4, '0', STR_PAD_LEFT);
