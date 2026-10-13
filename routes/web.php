@@ -7,6 +7,7 @@ use App\Http\Controllers\BukuController;
 use App\Http\Controllers\DetailBukuController;
 use App\Http\Controllers\PeminjamanController;
 use App\Http\Controllers\LaporanController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
 
 Route::get('/', function () {
@@ -61,6 +62,10 @@ Route::get('/user/buku', [BukuController::class, 'katalog'])
 Route::get('/user/peminjaman', [PeminjamanController::class, 'saya'])
     ->middleware(['auth', 'role:user'])
     ->name('user.peminjaman');
+
+Route::post('/user/pinjam/{buku}', [PeminjamanController::class, 'ajukan'])
+    ->middleware(['auth', 'role:user'])
+    ->name('user.pinjam');
 
 Route::get('/user/profil', [ProfileController::class, 'index'])
     ->middleware(['auth', 'role:user'])
@@ -121,4 +126,10 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         '/laporan/peminjaman/excel',
         [LaporanController::class, 'excel']
     )->name('laporan.peminjaman.excel');
+
+    Route::get('/admin/users', [UserController::class, 'index'])
+        ->name('admin.users');
+
+    Route::post('/admin/users/{user}/kaitkan', [UserController::class, 'kaitkan'])
+        ->name('admin.users.kaitkan');
 });

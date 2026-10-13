@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Anggota;
+use App\Models\Buku;
 use App\Models\DetailBuku;
 use App\Models\Peminjaman;
 use Illuminate\Http\Request;
@@ -145,24 +146,91 @@ class PeminjamanController extends Controller
 
     public function saya(Request $request)
     {
-        $nama = $request->user()->nama;
+        $user = $request->user();
+
+        if (!$user->id_anggota) {
+            return view('user.peminjaman', [
+                'peminjaman' => collect(),
+                'tidakTerhubung' => true,
+            ]);
+        }
 
         $peminjaman = Peminjaman::with([
             'anggota',
             'detailBuku.buku'
         ])
-            ->whereHas('anggota', function ($query) use ($nama) {
-                $query->where(
-                    'nama_anggota',
-                    $nama
-                );
-            })
+            ->where('id_anggota', $user->id_anggota)
             ->latest('tgl_pinjam')
             ->paginate(10);
 
-        return view(
-            'user.peminjaman',
-            compact('peminjaman')
+        return view('user.peminjaman', compact('peminjaman'));
+    }
+
+    public function ajukan(Request $request, \App\Models\Buku $buku)
+    {
+        $user = $request->user();
+
+        if (!$user->id_anggota) {
+            return back()->with(
+                'error',
+                'Akun kamu belum terhubung ke data anggota perpustakaan. Hubungi petugas untuk mengaitkan akunmu.'
+            );
+        }
+
+        $hasDipinjam = Peminjaman::where('id_anggota', $user->id_anggota)
+            ->where('status', 'dipinjam')
+            ->whereHas('detailBuku', function ($q) use ($buku) {
+                $q->where('id_buku', $buku->id_buku);
+            })
+            ->exists();
+
+        if ($hasDipinjam) {
+            return back()->with(
+                'error',
+                'Kamu sudah meminjam buku ini dan belum mengembalikannya.'
+            );
+        }
+
+        try {
+            DB::transaction(function () use ($user, $buku) {
+
+                $detailBuku = DetailBuku::where('id_buku', $buku->id_buku)
+                    ->where('status', 'ada')
+                    ->lockForUpdate()
+                    ->first();
+
+                if (!$detailBuku) {
+                    throw new \Exception('Semua eksemplar buku ini sedang dipinjam.');
+                }
+
+                $lastId = Peminjaman::lockForUpdate()
+                    ->orderByDesc('id_pinjam')
+                    ->value('id_pinjam');
+
+                $nextNumber = 1;
+                if ($lastId) {
+                    $nextNumber = ((int) ltrim($lastId, 'P')) + 1;
+                }
+
+                $idPinjam = 'P' . str_pad($nextNumber, 4, '0', STR_PAD_LEFT);
+
+                Peminjaman::create([
+                    'id_pinjam'  => $idPinjam,
+                    'tgl_pinjam' => now()->toDateString(),
+                    'id_anggota' => $user->id_anggota,
+                    'no_buku'    => $detailBuku->no_buku,
+                    'status'     => 'dipinjam',
+                ]);
+
+                $detailBuku->update(['status' => 'dipinjam']);
+            });
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
+
+        return back()->with(
+            'success',
+            'Peminjaman berhasil diajukan. Ambil buku di perpustakaan.'
         );
     }
 }

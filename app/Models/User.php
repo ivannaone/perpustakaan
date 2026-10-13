@@ -16,6 +16,7 @@ class User extends Authenticatable
         'username',
         'password',
         'role',
+        'id_anggota',
     ];
 
     protected $hidden = [
@@ -28,5 +29,14 @@ class User extends Authenticatable
         return [
             'password' => 'hashed',
         ];
+    }
+
+    public function anggota()
+    {
+        return $this->belongsTo(
+            \App\Models\Anggota::class,
+            'id_anggota',
+            'id_anggota'
+        );
     }
 }

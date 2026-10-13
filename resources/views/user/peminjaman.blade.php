@@ -197,46 +197,80 @@
         </p>
     </div>
 
-    @forelse ($peminjaman as $item)
-
-        <div class="card">
-
-            <div class="book-title">
-                {{ $item->detailBuku->buku->judul_buku ?? '-' }}
-            </div>
-
-            <div class="info">
-                <div>No. Buku: {{ $item->no_buku }}</div>
-
-                <div>
-                    Tanggal Pinjam:
-                    {{ $item->tgl_pinjam?->format('d-m-Y') ?? '-' }}
-                </div>
-
-                <div>
-                    Tanggal Kembali:
-                    {{ $item->tgl_kembali?->format('d-m-Y') ?? 'Belum dikembalikan' }}
-                </div>
-            </div>
-
-            <span class="status {{ $item->status }}">
-                {{ ucfirst($item->status) }}
-            </span>
-
+    @if(session('success'))
+        <div style="background:#f0fdf4;border:1px solid #bbf7d0;color:#166534;border-radius:10px;padding:14px 18px;font-size:13px;margin-bottom:20px;">
+            ✓ {{ session('success') }}
         </div>
+    @endif
 
-    @empty
+    @if(session('error'))
+        <div style="background:#fef2f2;border:1px solid #fecaca;color:#991b1b;border-radius:10px;padding:14px 18px;font-size:13px;margin-bottom:20px;">
+            ✕ {{ session('error') }}
+        </div>
+    @endif
+
+    @if(!empty($tidakTerhubung))
 
         <div class="empty">
-            <h3>Belum ada peminjaman</h3>
-            <p>Kamu belum memiliki riwayat peminjaman buku.</p>
+            <div style="font-size:40px;margin-bottom:14px;">🔗</div>
+            <h3>Akun belum terhubung</h3>
+            <p style="margin-top:8px;">
+                Akun kamu belum dikaitkan dengan data anggota perpustakaan.<br>
+                Hubungi petugas perpustakaan untuk menghubungkan akunmu.
+            </p>
         </div>
 
-    @endforelse
+    @elseif($peminjaman->isEmpty())
 
-    <div class="pagination">
-        {{ $peminjaman->links() }}
-    </div>
+        <div class="empty">
+            <div style="font-size:40px;margin-bottom:14px;">📚</div>
+            <h3>Belum ada peminjaman</h3>
+            <p style="margin-top:8px;">Kamu belum memiliki riwayat peminjaman buku.</p>
+            <a
+                href="{{ route('user.buku') }}"
+                style="display:inline-block;margin-top:16px;background:#2563eb;color:white;padding:10px 20px;border-radius:8px;font-size:13px;font-weight:bold;text-decoration:none;"
+            >
+                Lihat Katalog Buku
+            </a>
+        </div>
+
+    @else
+
+        @foreach ($peminjaman as $item)
+
+            <div class="card">
+
+                <div class="book-title">
+                    {{ $item->detailBuku->buku->judul_buku ?? '-' }}
+                </div>
+
+                <div class="info">
+                    <div>No. Eksemplar: {{ $item->no_buku }}</div>
+
+                    <div>
+                        Tanggal Pinjam:
+                        {{ $item->tgl_pinjam?->format('d-m-Y') ?? '-' }}
+                    </div>
+
+                    <div>
+                        Tanggal Kembali:
+                        {{ $item->tgl_kembali?->format('d-m-Y') ?? 'Belum dikembalikan' }}
+                    </div>
+                </div>
+
+                <span class="status {{ $item->status }}">
+                    {{ $item->status === 'dipinjam' ? 'Sedang Dipinjam' : 'Sudah Dikembalikan' }}
+                </span>
+
+            </div>
+
+        @endforeach
+
+        <div class="pagination">
+            {{ $peminjaman->links() }}
+        </div>
+
+    @endif
 
 </main>
 

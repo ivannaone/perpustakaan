@@ -241,6 +241,61 @@
             color: #b91c1c;
         }
 
+        .pinjam-btn {
+            display: block;
+            width: 100%;
+            margin-top: 12px;
+            padding: 9px 0;
+            border: none;
+            border-radius: 7px;
+            background: #2563eb;
+            color: white;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .pinjam-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .pinjam-btn:disabled {
+            background: #d1d5db;
+            color: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        .alert-warning {
+            background: #fefce8;
+            border: 1px solid #fde68a;
+            color: #92400e;
+            border-radius: 10px;
+            padding: 14px 18px;
+            font-size: 13px;
+            margin-bottom: 22px;
+        }
+
+        .alert-success {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            color: #166534;
+            border-radius: 10px;
+            padding: 14px 18px;
+            font-size: 13px;
+            margin-bottom: 22px;
+        }
+
+        .alert-error {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #991b1b;
+            border-radius: 10px;
+            padding: 14px 18px;
+            font-size: 13px;
+            margin-bottom: 22px;
+        }
+
         .empty {
             background: white;
             border: 1px solid #e5e7eb;
@@ -441,6 +496,25 @@
 
     <main class="container">
 
+        @if(!$sudahTerhubung)
+            <div class="alert-warning">
+                ⚠️ Akun kamu belum terhubung ke data anggota perpustakaan.
+                Hubungi petugas perpustakaan untuk mengaitkan akunmu sebelum bisa meminjam buku.
+            </div>
+        @endif
+
+        @if(session('success'))
+            <div class="alert-success">
+                ✓ {{ session('success') }}
+            </div>
+        @endif
+
+        @if(session('error'))
+            <div class="alert-error">
+                ✕ {{ session('error') }}
+            </div>
+        @endif
+
         <div class="search-area">
 
             <form
@@ -514,16 +588,32 @@
                                 {{ $item->tahun_terbit ?? '-' }}
                             </p>
 
-                            @if($item->jumlah > 0)
+                            @if($item->stok_tersedia > 0)
 
                                 <span class="status available">
-                                    Tersedia · {{ $item->jumlah }} buku
+                                    Tersedia · {{ $item->stok_tersedia }} eksemplar
                                 </span>
+
+                                @if($sudahTerhubung)
+                                    <form
+                                        action="{{ route('user.pinjam', $item->id_buku) }}"
+                                        method="POST"
+                                    >
+                                        @csrf
+                                        <button type="submit" class="pinjam-btn">
+                                            Pinjam Buku
+                                        </button>
+                                    </form>
+                                @else
+                                    <button type="button" class="pinjam-btn" disabled>
+                                        Pinjam Buku
+                                    </button>
+                                @endif
 
                             @else
 
                                 <span class="status empty">
-                                    Tidak tersedia
+                                    Stok Habis
                                 </span>
 
                             @endif

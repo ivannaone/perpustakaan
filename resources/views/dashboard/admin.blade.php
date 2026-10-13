@@ -407,6 +407,12 @@
                 </a>
             </li>
 
+            <li>
+                <a href="{{ route('admin.users') }}">
+                    🔗 Kelola Akun User
+                </a>
+            </li>
+
         </ul>
 
         <form

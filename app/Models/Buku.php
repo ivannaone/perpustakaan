@@ -32,4 +32,9 @@ class Buku extends Model
     {
         return 'id_buku';
     }
+
+    public function detailBuku()
+    {
+        return $this->hasMany(DetailBuku::class, 'id_buku', 'id_buku');
+    }
 }

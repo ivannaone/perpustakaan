@@ -31,7 +31,11 @@ class BukuController extends Controller
     {
         $search = $request->input('search');
 
-        $buku = Buku::query()
+        $buku = Buku::withCount([
+            'detailBuku as stok_tersedia' => function ($query) {
+                $query->where('status', 'ada');
+            },
+        ])
             ->when($search, function ($query) use ($search) {
                 $query->where('id_buku', 'like', "%{$search}%")
                     ->orWhere('judul_buku', 'like', "%{$search}%")
@@ -42,7 +46,9 @@ class BukuController extends Controller
             ->paginate(12)
             ->withQueryString();
 
-        return view('user.buku', compact('buku', 'search'));
+        $sudahTerhubung = (bool) $request->user()->id_anggota;
+
+        return view('user.buku', compact('buku', 'search', 'sudahTerhubung'));
     }
 
     public function create()
