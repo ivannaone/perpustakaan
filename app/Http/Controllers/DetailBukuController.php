@@ -48,6 +48,11 @@ class DetailBukuController extends Controller
 
     public function generate(Buku $buku)
     {
+        if (!$buku->jumlah || $buku->jumlah < 1) {
+            return redirect()->route('detail-buku.index')
+                ->with('error', 'Jumlah eksemplar buku ini adalah 0. Perbarui data buku terlebih dahulu.');
+        }
+
         for ($i = 1; $i <= $buku->jumlah; $i++) {
             $noBuku = $buku->id_buku . '-' . str_pad($i, 2, '0', STR_PAD_LEFT);
 
@@ -86,6 +91,11 @@ class DetailBukuController extends Controller
 
     public function destroy(DetailBuku $detailBuku)
     {
+        if ($detailBuku->status === 'dipinjam') {
+            return redirect()->route('detail-buku.index')
+                ->with('error', 'Eksemplar ini sedang dipinjam dan tidak bisa dihapus.');
+        }
+
         $detailBuku->delete();
 
         return redirect()->route('detail-buku.index')

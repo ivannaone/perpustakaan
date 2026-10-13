@@ -324,6 +324,14 @@
 
     @endif
 
+    @if (session('error'))
+
+        <div style="background:#fee2e2;color:#991b1b;padding:12px 15px;border-radius:8px;margin-bottom:20px;">
+            {{ session('error') }}
+        </div>
+
+    @endif
+
     <form
         action="{{ route('detail-buku.index') }}"
         method="GET"
