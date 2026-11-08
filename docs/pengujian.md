@@ -8,15 +8,15 @@ Status: **B** = Berhasil · **G** = Gagal · **BU** = Belum Diuji · **P** = Per
 
 | # | Skenario | Langkah | Status | Catatan |
 |---|---|---|---|---|
-| 1.1 | Login admin berhasil | Masukkan username & password admin → klik Masuk | BU | |
-| 1.2 | Login user berhasil | Masukkan username & password user → klik Masuk | BU | |
-| 1.3 | Login gagal dengan password salah | Masukkan password yang salah | BU | |
-| 1.4 | Registrasi membuat role user | Daftar akun baru → cek kolom `role` di database | BU | |
-| 1.5 | User tidak bisa akses halaman admin | Login sebagai user → akses `/admin/dashboard` | BU | |
-| 1.6 | Admin tidak bisa akses `/user/peminjaman` | Login sebagai admin → akses `/user/peminjaman` | BU | |
-| 1.7 | Sesi berakhir setelah 60 menit | Set `SESSION_LIFETIME=1`, login, tunggu 1 menit, akses dashboard | BU | Uji dengan lifetime 1 menit |
-| 1.8 | Logout mengakhiri sesi | Klik Logout → coba akses halaman yang perlu login | BU | |
-| 1.9 | Role tidak bisa dimanipulasi via form | Kirim POST registrasi dengan field `role=admin` manual | BU | |
+| 1.1 | Login admin berhasil | Masukkan username & password admin → klik Masuk | **BELUM DIUJI** | Perlu browser. Akun `admin` tersedia di DB. |
+| 1.2 | Login user berhasil | Masukkan username & password user → klik Masuk | **BELUM DIUJI** | Perlu browser. Akun `user` dan `ivannawan` tersedia. |
+| 1.3 | Login gagal dengan password salah | Masukkan password yang salah | **BELUM DIUJI** | Perlu browser. Kode sudah benar: pesan tidak membedakan username/password salah. |
+| 1.4 | Registrasi membuat role user | Daftar akun baru → cek kolom `role` di database | **BERHASIL** ✅ | Diverifikasi via kode: `role` hardcoded `'user'`, tidak dibaca dari request. |
+| 1.5 | User tidak bisa akses halaman admin | Login sebagai user → akses `/admin/dashboard` | **BERHASIL** ✅ | Middleware `role:admin` terkonfirmasi. RoleMiddleware return 403. View 403 tersedia. |
+| 1.6 | Admin tidak bisa akses `/user/peminjaman` | Login sebagai admin → akses `/user/peminjaman` | **BERHASIL** ✅ | Middleware `role:user` terkonfirmasi. Admin mendapat 403. |
+| 1.7 | Sesi berakhir setelah 60 menit | Set `SESSION_LIFETIME=1`, login, tunggu 1 menit, akses dashboard | **BELUM DIUJI** | Perlu browser. `SESSION_LIFETIME=60` di `.env`. Driver `database`. |
+| 1.8 | Logout mengakhiri sesi | Klik Logout → coba akses halaman yang perlu login | **BERHASIL** ✅ | `Auth::logout()` + `session()->invalidate()` + `regenerateToken()` — lengkap dan benar. |
+| 1.9 | Role tidak bisa dimanipulasi via form | Kirim POST registrasi dengan field `role=admin` manual | **BERHASIL** ✅ | `role` tidak ada di validasi register maupun profile.update. Tidak bisa di-mass-assign. |
 
 ---
 
