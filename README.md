@@ -1,59 +1,133 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Sistem Informasi Perpustakaan
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Aplikasi web untuk mengelola data perpustakaan sekolah, mencakup anggota,
+koleksi buku, peminjaman, dan laporan. Dibuat sebagai project tugas sekolah.
 
-## About Laravel
+**Pembuat:** Ivanna Maulida Ikmala
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Teknologi
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+| Komponen | Versi |
+|---|---|
+| Laravel | 12 |
+| PHP | 8.2 |
+| MySQL / MariaDB | 10.4+ (XAMPP) |
+| Blade + HTML/CSS/JS | — |
+| Laravel Excel (Maatwebsite) | 3.1 |
+| DomPDF (barryvdh) | 3.1 |
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+## Fitur Aplikasi
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Sisi Admin
 
-## Laravel Sponsors
+- Login dan logout
+- Dashboard dengan statistik (total buku, anggota, peminjaman)
+- CRUD anggota perpustakaan
+- CRUD buku dan import dari Excel
+- Manajemen eksemplar buku (detail buku) dengan generate otomatis
+- Pencatatan peminjaman dan pengembalian buku
+- Kelola akun user — kaitkan akun dengan data anggota
+- Laporan peminjaman: cetak PDF dan export Excel
+- Pencarian dan pagination pada semua halaman data
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### Sisi User
 
-### Premium Partners
+- Registrasi akun (role user otomatis)
+- Login dan logout
+- Dashboard dengan buku terbaru dari database
+- Katalog buku dengan pencarian dan informasi ketersediaan
+- Pengajuan peminjaman langsung dari katalog
+- Halaman Peminjaman Saya — riwayat peminjaman milik sendiri
+- Halaman Profil — ubah nama dan username
+- Informasi perpustakaan
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+---
 
-## Contributing
+## Struktur Folder Utama
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```
+perpustakaan/
+├── app/
+│   ├── Exports/                  PeminjamanExport.php
+│   ├── Http/
+│   │   ├── Controllers/          Semua controller
+│   │   └── Middleware/           RoleMiddleware.php
+│   ├── Imports/                  BukuImport.php, BukuSheetImport.php
+│   └── Models/                   User, Anggota, Buku, DetailBuku, Peminjaman
+├── database/
+│   └── migrations/               Semua file migration
+├── docs/                         Dokumentasi project
+│   ├── erd.md                    ERD dan struktur database
+│   ├── instalasi.md              Panduan instalasi lokal
+│   ├── panduan-admin.md          Panduan penggunaan admin
+│   ├── panduan-user.md           Panduan penggunaan user
+│   ├── pengujian.md              Checklist pengujian
+│   └── persiapan-hosting.md      Panduan deployment
+├── public/                       Document root (index.php)
+├── resources/views/              Blade templates
+│   ├── admin/                    Halaman khusus admin (Kelola Akun User)
+│   ├── anggota/                  CRUD anggota
+│   ├── auth/                     Login, register
+│   ├── buku/                     CRUD buku
+│   ├── dashboard/                Dashboard admin dan user
+│   ├── detail_buku/              CRUD detail buku
+│   ├── laporan/                  Halaman laporan dan template PDF
+│   ├── peminjaman/               CRUD peminjaman
+│   └── user/                     Halaman user (katalog, peminjaman saya, profil, informasi)
+├── routes/web.php                Semua definisi route
+└── .env                          Konfigurasi (tidak di-commit)
+```
 
-## Code of Conduct
+---
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## Instalasi Lokal
 
-## Security Vulnerabilities
+Lihat panduan lengkap di [`docs/instalasi.md`](docs/instalasi.md).
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Ringkasan singkat:
 
-## License
+```bash
+git clone https://github.com/ivannaone/perpustakaan.git
+cd perpustakaan
+composer install
+npm install && npm run build
+cp .env.example .env
+php artisan key:generate
+# konfigurasi database di .env
+php artisan migrate
+php artisan serve
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+---
+
+## Dokumentasi
+
+| Dokumen | Deskripsi |
+|---|---|
+| [`docs/erd.md`](docs/erd.md) | ERD dan struktur tabel database |
+| [`docs/instalasi.md`](docs/instalasi.md) | Instalasi dan konfigurasi lokal |
+| [`docs/panduan-admin.md`](docs/panduan-admin.md) | Panduan penggunaan untuk admin |
+| [`docs/panduan-user.md`](docs/panduan-user.md) | Panduan penggunaan untuk user |
+| [`docs/pengujian.md`](docs/pengujian.md) | Checklist dan skenario pengujian |
+| [`docs/persiapan-hosting.md`](docs/persiapan-hosting.md) | Persiapan dan panduan deployment |
+
+---
+
+## Akun Demo
+
+| Role | Username | Password |
+|---|---|---|
+| Admin | admin | (sesuai yang di-setup saat instalasi) |
+| User | (daftar via halaman Register) | (password yang didaftarkan) |
+
+Jangan gunakan password pribadi untuk akun demo.
+
+---
+
+## Lisensi
+
+Project ini dibuat untuk keperluan tugas sekolah.
