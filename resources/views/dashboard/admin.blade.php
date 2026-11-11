@@ -3,543 +3,364 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Dashboard Admin | Perpustakaan</title>
-
+    <title>Dashboard — PustakaLog</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, Helvetica, sans-serif;
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --cream-50:  #fdfaf5;
+            --cream-100: #f7f1e3;
+            --cream-200: #ede4cc;
+            --brown-500: #8a6540;
+            --sage-200:  #d4dfc8;
+            --sage-500:  #6a8f52;
+            --navy-500:  #1e3a5f;
+            --navy-600:  #162d4a;
+            --navy-400:  #2a5080;
+            --text-main: #1a1a2e;
+            --text-muted:#64748b;
+            --border:    #e2e8f0;
+            --sidebar-w: 240px;
+            --shadow:    0 2px 12px rgba(30,58,95,.08);
+            --shadow-card: 0 4px 20px rgba(30,58,95,.10);
+            --radius-lg: 14px;
+            --radius-md: 9px;
         }
-
-        body {
-            background: #f4f7fb;
-            color: #172033;
-        }
-
+        body { font-family: 'Inter', system-ui, sans-serif; background: #f1f5f9; color: var(--text-main); min-height: 100vh; }
+        a { text-decoration: none; color: inherit; }
 
         .sidebar {
-            position: fixed;
-            left: 0;
-            top: 0;
-            width: 250px;
-            height: 100vh;
-            background: #1d4ed8;
-            color: white;
-            padding: 30px 20px;
-            z-index: 1000;
+            position: fixed; left: 0; top: 0; width: var(--sidebar-w);
+            height: 100vh; background: var(--navy-500); color: white;
+            display: flex; flex-direction: column; z-index: 100;
+            overflow-y: auto;
         }
-
-        .logo {
-            font-size: 22px;
-            font-weight: bold;
-            margin-bottom: 40px;
-            padding-left: 10px;
+        .sidebar-brand {
+            padding: 24px 20px 16px;
+            border-bottom: 1px solid rgba(255,255,255,.08);
+            display: flex; align-items: center; gap: 10px;
         }
-
-        .menu {
-            list-style: none;
+        .sidebar-brand-icon {
+            width: 36px; height: 36px; background: rgba(255,255,255,.12);
+            border-radius: 9px; display: flex; align-items: center; justify-content: center;
+            font-size: 17px;
         }
+        .sidebar-brand-text strong { display: block; font-family: 'Lora', serif; font-size: 16px; }
+        .sidebar-brand-text small  { font-size: 10px; opacity: .6; letter-spacing: .5px; text-transform: uppercase; }
 
-        .menu li {
-            margin-bottom: 8px;
+        .sidebar-section-label {
+            padding: 20px 20px 8px;
+            font-size: 10px; font-weight: 600; letter-spacing: .8px;
+            text-transform: uppercase; opacity: .45;
         }
-
-        .menu a {
-            display: block;
-            text-decoration: none;
-            color: rgba(255,255,255,0.8);
-            padding: 13px 15px;
-            border-radius: 9px;
-            transition: 0.2s;
+        .sidebar-menu { padding: 0 12px; }
+        .sidebar-menu a {
+            display: flex; align-items: center; gap: 10px;
+            padding: 10px 12px; border-radius: var(--radius-md);
+            font-size: 14px; font-weight: 500; color: rgba(255,255,255,.75);
+            margin-bottom: 2px; transition: background .15s, color .15s;
         }
+        .sidebar-menu a:hover { background: rgba(255,255,255,.08); color: white; }
+        .sidebar-menu a.active { background: rgba(255,255,255,.14); color: white; }
+        .sidebar-menu a .icon { font-size: 16px; width: 20px; text-align: center; }
 
-        .menu a:hover,
-        .menu .active {
-            background: rgba(255,255,255,0.15);
-            color: white;
+        .sidebar-footer {
+            margin-top: auto; padding: 16px 12px 20px;
+            border-top: 1px solid rgba(255,255,255,.08);
         }
-
-        .logout {
-            margin-top: 30px;
+        .sidebar-footer form button {
+            width: 100%; display: flex; align-items: center; gap: 10px;
+            padding: 10px 12px; border-radius: var(--radius-md);
+            background: none; border: none; cursor: pointer;
+            font-size: 14px; color: rgba(255,255,255,.65);
+            font-family: 'Inter', sans-serif; transition: background .15s;
         }
-
-        .logout button {
-            width: 100%;
-            border: none;
-            padding: 12px;
-            border-radius: 9px;
-            background: rgba(255,255,255,0.12);
-            color: white;
-            cursor: pointer;
-            font-size: 14px;
-        }
-
-        .logout button:hover {
-            background: rgba(255,255,255,0.2);
-        }
-
+        .sidebar-footer form button:hover { background: rgba(255,255,255,.08); color: white; }
 
         .menu-toggle {
-            display: none;
-            position: fixed;
-            top: 15px;
-            left: 15px;
-            width: 42px;
-            height: 42px;
-            border: none;
-            border-radius: 10px;
-            background: #1d4ed8;
-            color: white;
-            font-size: 22px;
-            cursor: pointer;
-            z-index: 1100;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            display: none; position: fixed; top: 14px; left: 14px;
+            width: 40px; height: 40px; background: var(--navy-500); color: white;
+            border: none; border-radius: 10px; cursor: pointer;
+            font-size: 18px; z-index: 150; box-shadow: 0 2px 8px rgba(0,0,0,.2);
         }
-
-        .overlay {
-            display: none;
-        }
-
-
-        /* =========================
-           MAIN
-        ========================= */
+        .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.35); z-index: 90; }
 
         .main {
-            margin-left: 250px;
-            padding: 35px;
+            margin-left: var(--sidebar-w);
+            min-height: 100vh;
+            display: flex; flex-direction: column;
         }
-
         .topbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 35px;
+            background: white; border-bottom: 1px solid var(--border);
+            padding: 0 28px; height: 64px;
+            display: flex; align-items: center; justify-content: space-between;
+            position: sticky; top: 0; z-index: 50; box-shadow: var(--shadow);
         }
-
-        .topbar h1 {
-            font-size: 28px;
+        .topbar-left h1 { font-size: 20px; font-weight: 700; }
+        .topbar-left p { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+        .topbar-right { display: flex; align-items: center; gap: 12px; }
+        .topbar-avatar {
+            width: 36px; height: 36px; border-radius: 50%;
+            background: var(--cream-200); color: var(--brown-500);
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 14px; border: 2px solid var(--border);
         }
+        .topbar-name { font-size: 14px; font-weight: 500; }
 
-        .topbar p {
-            margin-top: 5px;
-            color: #7b8494;
+        .content { flex: 1; padding: 28px; }
+
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-bottom: 28px; }
+        .stat-card {
+            background: white; border-radius: var(--radius-lg); padding: 22px 20px;
+            border: 1px solid var(--border); display: flex; flex-direction: column; gap: 14px;
+            transition: box-shadow .2s;
         }
+        .stat-card:hover { box-shadow: var(--shadow-card); }
+        .stat-header { display: flex; align-items: center; justify-content: space-between; }
+        .stat-label { font-size: 13px; color: var(--text-muted); font-weight: 500; }
+        .stat-icon { width: 38px; height: 38px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .icon-blue   { background: #dbeafe; }
+        .icon-green  { background: #dcfce7; }
+        .icon-amber  { background: #fef3c7; }
+        .icon-purple { background: #ede9fe; }
+        .stat-number { font-size: 32px; font-weight: 700; line-height: 1; }
 
-        .admin-name {
-            background: white;
-            padding: 11px 18px;
-            border-radius: 10px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
-            font-size: 14px;
+        .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+        .card { background: white; border-radius: var(--radius-lg); border: 1px solid var(--border); overflow: hidden; }
+        .card-header { padding: 18px 22px 0; display: flex; align-items: center; justify-content: space-between; }
+        .card-title { font-size: 16px; font-weight: 700; }
+        .card-link { font-size: 13px; color: var(--navy-400); font-weight: 600; }
+        .card-link:hover { text-decoration: underline; }
+        .card-body { padding: 18px 22px; }
+
+        .quick-nav { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .quick-nav-item {
+            display: flex; align-items: center; gap: 12px;
+            padding: 14px; border-radius: var(--radius-md);
+            border: 1.5px solid var(--border);
+            background: var(--cream-50);
+            transition: border-color .15s, background .15s;
         }
+        .quick-nav-item:hover { border-color: var(--navy-400); background: white; }
+        .quick-nav-icon { font-size: 20px; }
+        .quick-nav-text strong { display: block; font-size: 13px; font-weight: 600; }
+        .quick-nav-text span { font-size: 12px; color: var(--text-muted); }
 
+        .info-list { display: flex; flex-direction: column; gap: 0; }
+        .info-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border); font-size: 14px; }
+        .info-row:last-child { border-bottom: none; }
+        .info-row-label { color: var(--text-muted); }
+        .info-row-val { font-weight: 600; }
 
+        footer { background: white; border-top: 1px solid var(--border); padding: 16px 28px; font-size: 13px; color: var(--text-muted); }
 
-        .cards {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-        }
-
-        .card {
-            background: white;
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
-        }
-
-        .card-icon {
-            font-size: 28px;
-            margin-bottom: 15px;
-        }
-
-        .card h3 {
-            font-size: 14px;
-            color: #7b8494;
-            margin-bottom: 8px;
-        }
-
-        .card .number {
-            font-size: 30px;
-            font-weight: bold;
-        }
-
-
-
-        .content {
-            margin-top: 25px;
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
-        }
-
-        .content h2 {
-            margin-bottom: 10px;
-        }
-
-        .content p {
-            color: #7b8494;
-        }
-
-
-
-        @media (max-width: 1100px) {
-
-            .cards {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-        }
-
-
+        @media (max-width: 1100px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
         @media (max-width: 900px) {
-
-            .sidebar {
-                width: 210px;
-            }
-
-            .main {
-                margin-left: 210px;
-            }
-
+            .row-2 { grid-template-columns: 1fr; }
         }
-
-
-        @media (max-width: 650px) {
-
-            body {
-                overflow-x: hidden;
-            }
-
-            .sidebar {
-                position: fixed;
-                left: -270px;
-                top: 0;
-                width: 250px;
-                height: 100vh;
-                padding: 25px 18px;
-                transition: left 0.25s ease;
-                box-shadow: 5px 0 20px rgba(0,0,0,0.15);
-            }
-
-            .sidebar.open {
-                left: 0;
-            }
-
-            .menu-toggle {
-                display: block;
-            }
-
-            .overlay {
-                position: fixed;
-                inset: 0;
-                background: rgba(0,0,0,0.35);
-                z-index: 900;
-            }
-
-            .overlay.show {
-                display: block;
-            }
-
-            .main {
-                margin-left: 0;
-                padding: 75px 15px 25px;
-            }
-
-            .topbar {
-                margin-bottom: 22px;
-                gap: 12px;
-                align-items: flex-start;
-            }
-
-            .topbar h1 {
-                font-size: 23px;
-            }
-
-            .topbar p {
-                font-size: 13px;
-                line-height: 1.5;
-            }
-
-            .admin-name {
-                padding: 9px 12px;
-                font-size: 12px;
-                white-space: nowrap;
-            }
-
-            .cards {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 12px;
-            }
-
-            .card {
-                padding: 17px 15px;
-                border-radius: 12px;
-            }
-
-            .card-icon {
-                font-size: 23px;
-                margin-bottom: 9px;
-            }
-
-            .card h3 {
-                font-size: 12px;
-                margin-bottom: 6px;
-            }
-
-            .card .number {
-                font-size: 24px;
-            }
-
-            .content {
-                margin-top: 18px;
-                padding: 20px;
-                border-radius: 12px;
-            }
-
-            .content h2 {
-                font-size: 18px;
-                line-height: 1.4;
-            }
-
-            .content p {
-                font-size: 13px;
-                line-height: 1.5;
-            }
-
+        @media (max-width: 768px) {
+            .sidebar { left: calc(-1 * var(--sidebar-w)); transition: left .25s ease; }
+            .sidebar.open { left: 0; }
+            .overlay.show { display: block; }
+            .main { margin-left: 0; }
+            .menu-toggle { display: flex; align-items: center; justify-content: center; }
+            .topbar { padding-left: 68px; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
         }
-
-
-        @media (max-width: 380px) {
-
-            .main {
-                padding-left: 12px;
-                padding-right: 12px;
-            }
-
-            .topbar h1 {
-                font-size: 21px;
-            }
-
-            .admin-name {
-                font-size: 11px;
-                padding: 8px 10px;
-            }
-
-            .card {
-                padding: 15px 12px;
-            }
-
-            .card-icon {
-                font-size: 21px;
-            }
-
-            .card .number {
-                font-size: 22px;
-            }
-
+        @media (max-width: 480px) {
+            .stats-grid { grid-template-columns: 1fr; }
+            .quick-nav { grid-template-columns: 1fr; }
+            .content { padding: 16px; }
         }
     </style>
 </head>
-
 <body>
 
-    <button
-        class="menu-toggle"
-        id="menuToggle"
-        type="button"
-        aria-label="Buka menu"
-    >
-        ☰
-    </button>
+<button class="menu-toggle" id="menuToggle">☰</button>
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
 
-    <div
-        class="overlay"
-        id="overlay"
-    ></div>
-
-    <aside class="sidebar" id="sidebar">
-
-        <div class="logo">
-            📚 Perpustakaan
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+        <div class="sidebar-brand-icon">📚</div>
+        <div class="sidebar-brand-text">
+            <strong>PustakaLog</strong>
+            <small>Admin Panel</small>
         </div>
+    </div>
 
-        <ul class="menu">
+    <div class="sidebar-section-label">Menu Utama</div>
+    <nav class="sidebar-menu">
+        <a href="{{ route('admin.dashboard') }}" class="active">
+            <span class="icon">🏠</span> Dashboard
+        </a>
+        <a href="{{ route('buku.index') }}">
+            <span class="icon">📚</span> Data Buku
+        </a>
+        <a href="{{ route('detail-buku.index') }}">
+            <span class="icon">📖</span> Detail Buku
+        </a>
+        <a href="{{ route('anggota.index') }}">
+            <span class="icon">👥</span> Data Anggota
+        </a>
+        <a href="{{ route('peminjaman.index') }}">
+            <span class="icon">🔄</span> Peminjaman
+        </a>
+    </nav>
 
-            <li>
-                <a href="{{ route('admin.dashboard') }}" class="active">
-                    🏠 Dashboard
-                </a>
-            </li>
+    <div class="sidebar-section-label">Lainnya</div>
+    <nav class="sidebar-menu">
+        <a href="{{ route('admin.users') }}">
+            <span class="icon">🔗</span> Kelola Akun User
+        </a>
+        <a href="{{ route('laporan.index') }}">
+            <span class="icon">📊</span> Laporan
+        </a>
+    </nav>
 
-            <li>
-                <a href="{{ route('anggota.index') }}">
-                    👥 Data Anggota
-                </a>
-            </li>
-
-            <li>
-                <a href="{{ route('buku.index') }}">
-                    📚 Data Buku
-                </a>
-            </li>
-
-            <li>
-                <a href="{{ route('detail-buku.index') }}">
-                    📖 Detail Buku
-                </a>
-            </li>
-
-            <li>
-                <a href="{{ route('peminjaman.index') }}">
-                    🔄 Peminjaman
-                </a>
-            </li>
-
-            <li>
-                <a href="{{ route('laporan.index') }}">
-                    📊 Laporan
-                </a>
-            </li>
-
-            <li>
-                <a href="{{ route('admin.users') }}">
-                    🔗 Kelola Akun User
-                </a>
-            </li>
-
-        </ul>
-
-        <form
-            action="{{ route('logout') }}"
-            method="POST"
-            class="logout"
-        >
+    <div class="sidebar-footer">
+        <form action="{{ route('logout') }}" method="POST">
             @csrf
-
             <button type="submit">
-                🚪 Logout
+                <span class="icon">🚪</span> Keluar
             </button>
         </form>
+    </div>
+</aside>
 
-    </aside>
+<div class="main">
+    <header class="topbar">
+        <div class="topbar-left">
+            <h1>Dashboard</h1>
+            <p>Selamat datang kembali, {{ Auth::user()->nama }}</p>
+        </div>
+        <div class="topbar-right">
+            <div class="topbar-avatar">{{ strtoupper(substr(Auth::user()->nama, 0, 1)) }}</div>
+            <span class="topbar-name">{{ Auth::user()->nama }}</span>
+        </div>
+    </header>
 
-    <main class="main">
+    <main class="content">
 
-        <div class="topbar">
-
-            <div>
-                <h1>Dashboard Admin</h1>
-
-                <p>
-                    Selamat datang di Sistem Informasi Perpustakaan.
-                </p>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-label">Total Buku</span>
+                    <span class="stat-icon icon-blue">📚</span>
+                </div>
+                <div class="stat-number">{{ $totalBuku }}</div>
             </div>
-
-            <div class="admin-name">
-                👤 {{ Auth::user()->nama }}
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-label">Total Anggota</span>
+                    <span class="stat-icon icon-green">👥</span>
+                </div>
+                <div class="stat-number">{{ $totalAnggota }}</div>
             </div>
-
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-label">Buku Dipinjam</span>
+                    <span class="stat-icon icon-amber">📖</span>
+                </div>
+                <div class="stat-number">{{ $totalBukuDipinjam }}</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-label">Total Transaksi</span>
+                    <span class="stat-icon icon-purple">🔄</span>
+                </div>
+                <div class="stat-number">{{ $totalPeminjaman }}</div>
+            </div>
         </div>
 
-        <div class="cards">
-
+        <div class="row-2">
             <div class="card">
-
-                <div class="card-icon">
-                    📚
+                <div class="card-header">
+                    <span class="card-title">Akses Cepat</span>
                 </div>
-
-                <h3>Total Buku</h3>
-
-                <div class="number">
-                    {{ $totalBuku }}
+                <div class="card-body">
+                    <div class="quick-nav">
+                        <a href="{{ route('buku.create') }}" class="quick-nav-item">
+                            <span class="quick-nav-icon">➕</span>
+                            <div class="quick-nav-text">
+                                <strong>Tambah Buku</strong>
+                                <span>Input data buku baru</span>
+                            </div>
+                        </a>
+                        <a href="{{ route('anggota.create') }}" class="quick-nav-item">
+                            <span class="quick-nav-icon">👤</span>
+                            <div class="quick-nav-text">
+                                <strong>Tambah Anggota</strong>
+                                <span>Daftarkan anggota baru</span>
+                            </div>
+                        </a>
+                        <a href="{{ route('peminjaman.create') }}" class="quick-nav-item">
+                            <span class="quick-nav-icon">📋</span>
+                            <div class="quick-nav-text">
+                                <strong>Catat Peminjaman</strong>
+                                <span>Transaksi peminjaman</span>
+                            </div>
+                        </a>
+                        <a href="{{ route('laporan.index') }}" class="quick-nav-item">
+                            <span class="quick-nav-icon">📊</span>
+                            <div class="quick-nav-text">
+                                <strong>Lihat Laporan</strong>
+                                <span>PDF &amp; Excel</span>
+                            </div>
+                        </a>
+                    </div>
                 </div>
-
             </div>
 
-
             <div class="card">
-
-                <div class="card-icon">
-                    👥
+                <div class="card-header">
+                    <span class="card-title">Ringkasan Sistem</span>
                 </div>
-
-                <h3>Total Anggota</h3>
-
-                <div class="number">
-                    {{ $totalAnggota }}
+                <div class="card-body">
+                    <div class="info-list">
+                        <div class="info-row">
+                            <span class="info-row-label">Total Buku Koleksi</span>
+                            <span class="info-row-val">{{ $totalBuku }} judul</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-row-label">Total Anggota Terdaftar</span>
+                            <span class="info-row-val">{{ $totalAnggota }} orang</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-row-label">Buku Sedang Dipinjam</span>
+                            <span class="info-row-val">{{ $totalBukuDipinjam }} eksemplar</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-row-label">Total Transaksi Peminjaman</span>
+                            <span class="info-row-val">{{ $totalPeminjaman }} transaksi</span>
+                        </div>
+                    </div>
                 </div>
-
             </div>
-
-
-            <div class="card">
-
-                <div class="card-icon">
-                    📖
-                </div>
-
-                <h3>Buku Dipinjam</h3>
-
-                <div class="number">
-                    {{ $totalBukuDipinjam }}
-                </div>
-
-            </div>
-
-
-            <div class="card">
-
-                <div class="card-icon">
-                    🔄
-                </div>
-
-                <h3>Total Peminjaman</h3>
-
-                <div class="number">
-                    {{ $totalPeminjaman }}
-                </div>
-
-            </div>
-
-        </div>
-
-        <div class="content">
-
-            <h2>
-                Selamat Datang, {{ Auth::user()->nama }} 👋
-            </h2>
-
-            <p>
-                Gunakan menu di sebelah kiri untuk mengelola
-                data perpustakaan.
-            </p>
-
         </div>
 
     </main>
 
-    <script>
-        const menuToggle = document.getElementById('menuToggle');
-        const sidebar = document.getElementById('sidebar');
-        const overlay = document.getElementById('overlay');
+    <footer>
+        &copy; {{ date('Y') }} PustakaLog — Sistem Informasi Perpustakaan
+    </footer>
+</div>
 
-        menuToggle.addEventListener('click', function () {
-            sidebar.classList.toggle('open');
-            overlay.classList.toggle('show');
-        });
+<script>
+    const menuToggle = document.getElementById('menuToggle');
+    const sidebar    = document.getElementById('sidebar');
+    const overlay    = document.getElementById('overlay');
 
-        overlay.addEventListener('click', function () {
-            sidebar.classList.remove('open');
-            overlay.classList.remove('show');
-        });
-    </script>
+    menuToggle.addEventListener('click', () => {
+        sidebar.classList.add('open');
+        overlay.classList.add('show');
+    });
 
+    function closeSidebar() {
+        sidebar.classList.remove('open');
+        overlay.classList.remove('show');
+    }
+</script>
 </body>
 </html>
