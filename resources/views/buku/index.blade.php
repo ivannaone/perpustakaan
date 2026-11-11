@@ -1,573 +1,218 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Data Buku - Perpustakaan</title>
-
-    <style>
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f1f5f9;
-            color: #1e293b;
-        }
-
-        .header {
-            background: #2563eb;
-            color: white;
-            padding: 20px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .header h2 {
-            margin: 0;
-            font-size: 22px;
-        }
-
-        .header span {
-            font-size: 14px;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 30px auto;
-            padding: 0 20px;
-        }
-
-        .top {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 25px;
-        }
-
-        .back-button {
-            width: 48px;
-            height: 48px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: #64748b;
-            color: white;
-            text-decoration: none;
-            border-radius: 8px;
-            font-size: 25px;
-            flex-shrink: 0;
-        }
-
-        .back-button:hover {
-            background: #475569;
-        }
-
-        .top h1 {
-            margin: 0;
-            font-size: 30px;
-            flex: 1;
-        }
-
-        .add-button {
-            display: inline-block;
-            padding: 12px 16px;
-            border-radius: 8px;
-            text-decoration: none;
-            color: white;
-            background: #2563eb;
-            font-size: 15px;
-            font-weight: 600;
-        }
-
-        .add-button:hover {
-            background: #1d4ed8;
-        }
-
-        .import-box {
-            background: white;
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-        }
-
-        .import-form {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
-
-        .file-input {
-            flex: 1;
-            min-width: 0;
-            padding: 10px;
-            border: 1px solid #d1d5db;
-            border-radius: 8px;
-            background: white;
-        }
-
-        .import-button {
-            padding: 11px 18px;
-            border: none;
-            border-radius: 8px;
-            background: #2563eb;
-            color: white;
-            cursor: pointer;
-            font-size: 14px;
-            white-space: nowrap;
-        }
-
-        .import-button:hover {
-            background: #1d4ed8;
-        }
-
-        .success {
-            background: #dcfce7;
-            color: #166534;
-            padding: 12px 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-        }
-
-        .search {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .search input {
-            flex: 1;
-            padding: 12px 14px;
-            border: 1px solid #d1d5db;
-            border-radius: 8px;
-            font-size: 14px;
-            outline: none;
-            min-width: 0;
-        }
-
-        .search input:focus {
-            border-color: #2563eb;
-        }
-
-        .search button,
-        .reset-button {
-            padding: 12px 18px;
-            border: none;
-            border-radius: 8px;
-            background: #2563eb;
-            color: white;
-            cursor: pointer;
-            text-decoration: none;
-            font-size: 14px;
-            white-space: nowrap;
-        }
-
-        .search button:hover {
-            background: #1d4ed8;
-        }
-
-        .reset-button {
-            background: #64748b;
-        }
-
-        .reset-button:hover {
-            background: #475569;
-        }
-
-        .table-wrapper {
-            background: white;
-            border-radius: 12px;
-            overflow-x: auto;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            min-width: 950px;
-        }
-
-        th,
-        td {
-            padding: 14px 15px;
-            border-bottom: 1px solid #e5e7eb;
-            text-align: left;
-            font-size: 14px;
-        }
-
-        th {
-            background: #eff6ff;
-            color: #1e40af;
-        }
-
-        tr:hover td {
-            background: #f8fafc;
-        }
-
-        .action-edit {
-            color: #2563eb;
-            text-decoration: none;
-            margin-right: 10px;
-        }
-
-        .action-edit:hover {
-            text-decoration: underline;
-        }
-
-        .action-delete {
-            color: #dc2626;
-            border: none;
-            background: none;
-            cursor: pointer;
-            font-size: 14px;
-            margin-right: 10px;
-        }
-
-        .action-delete:hover {
-            text-decoration: underline;
-        }
-
-        .action-generate {
-            color: #16a34a;
-            border: none;
-            background: none;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
-        }
-
-        .action-generate:hover {
-            color: #15803d;
-        }
-
-        .empty {
-            text-align: center;
-            padding: 35px;
-            color: #64748b;
-        }
-
-        .pagination {
-            margin-top: 20px;
-        }
-
-        @media (max-width: 700px) {
-            .header {
-                padding: 15px;
-            }
-
-            .header h2 {
-                font-size: 18px;
-            }
-
-            .header span {
-                font-size: 13px;
-            }
-
-            .container {
-                margin-top: 20px;
-                padding: 0 15px;
-            }
-
-            .top {
-                gap: 12px;
-                margin-bottom: 20px;
-                align-items: center;
-            }
-
-            .back-button {
-                width: 46px;
-                height: 46px;
-                font-size: 24px;
-            }
-
-            .top h1 {
-                font-size: 28px;
-                line-height: 1.15;
-            }
-
-            .add-button {
-                padding: 11px 13px;
-                font-size: 14px;
-                max-width: 125px;
-                line-height: 1.2;
-            }
-
-            .import-box {
-                padding: 18px;
-            }
-
-            .import-form {
-                flex-direction: column;
-                align-items: stretch;
-            }
-
-            .file-input,
-            .import-button {
-                width: 100%;
-            }
-
-            .search {
-                flex-direction: column;
-            }
-
-            .search input,
-            .search button,
-            .reset-button {
-                width: 100%;
-            }
-
-            .table-wrapper {
-                border-radius: 12px;
-            }
-
-            th,
-            td {
-                padding: 13px 14px;
-            }
-        }
-
-        @media (max-width: 430px) {
-            .top {
-                align-items: flex-start;
-            }
-
-            .top h1 {
-                font-size: 26px;
-            }
-
-            .add-button {
-                max-width: 115px;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data Buku — PustakaLog</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --cream-50:#fdfaf5;--cream-100:#f7f1e3;--cream-200:#ede4cc;
+  --brown-500:#8a6540;--sage-500:#6a8f52;
+  --navy-500:#1e3a5f;--navy-600:#162d4a;--navy-400:#2a5080;
+  --text-main:#1a1a2e;--text-muted:#64748b;
+  --border:#e2e8f0;--shadow:0 2px 12px rgba(30,58,95,.08);
+  --shadow-card:0 4px 20px rgba(30,58,95,.10);
+  --radius-lg:14px;--radius-md:9px;--sidebar-w:240px;
+}
+body{font-family:'Inter',system-ui,sans-serif;background:#f1f5f9;color:var(--text-main);min-height:100vh;}
+a{text-decoration:none;color:inherit;}
+.sidebar{position:fixed;left:0;top:0;width:var(--sidebar-w);height:100vh;background:var(--navy-500);color:white;display:flex;flex-direction:column;z-index:100;overflow-y:auto;}
+.sidebar-brand{padding:24px 20px 16px;border-bottom:1px solid rgba(255,255,255,.08);display:flex;align-items:center;gap:10px;}
+.sidebar-brand-icon{width:36px;height:36px;background:rgba(255,255,255,.12);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px;}
+.sidebar-brand-text strong{display:block;font-family:'Lora',serif;font-size:16px;}
+.sidebar-brand-text small{font-size:10px;opacity:.6;letter-spacing:.5px;text-transform:uppercase;}
+.sidebar-section-label{padding:20px 20px 8px;font-size:10px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;opacity:.45;}
+.sidebar-menu{padding:0 12px;}
+.sidebar-menu a{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:var(--radius-md);font-size:14px;font-weight:500;color:rgba(255,255,255,.75);margin-bottom:2px;transition:background .15s,color .15s;}
+.sidebar-menu a:hover{background:rgba(255,255,255,.08);color:white;}
+.sidebar-menu a.active{background:rgba(255,255,255,.14);color:white;}
+.sidebar-menu a .icon{font-size:16px;width:20px;text-align:center;}
+.sidebar-footer{margin-top:auto;padding:16px 12px 20px;border-top:1px solid rgba(255,255,255,.08);}
+.sidebar-footer form button{width:100%;display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:var(--radius-md);background:none;border:none;cursor:pointer;font-size:14px;color:rgba(255,255,255,.65);font-family:'Inter',sans-serif;transition:background .15s;}
+.sidebar-footer form button:hover{background:rgba(255,255,255,.08);color:white;}
+.menu-toggle{display:none;position:fixed;top:14px;left:14px;width:40px;height:40px;background:var(--navy-500);color:white;border:none;border-radius:10px;cursor:pointer;font-size:18px;z-index:150;align-items:center;justify-content:center;}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:90;}
+.main{margin-left:var(--sidebar-w);min-height:100vh;display:flex;flex-direction:column;}
+.topbar{background:white;border-bottom:1px solid var(--border);padding:0 28px;height:64px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;box-shadow:var(--shadow);}
+.topbar-left h1{font-size:20px;font-weight:700;}
+.topbar-left .breadcrumb{font-size:12px;color:var(--text-muted);margin-top:2px;}
+.topbar-right{display:flex;align-items:center;gap:12px;}
+.topbar-avatar{width:36px;height:36px;border-radius:50%;background:var(--cream-200);color:var(--brown-500);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;border:2px solid var(--border);}
+.content{flex:1;padding:28px;}
+.action-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:20px;flex-wrap:wrap;}
+.action-bar-left{display:flex;gap:10px;flex-wrap:wrap;}
+.btn{display:inline-flex;align-items:center;gap:7px;padding:10px 18px;border-radius:50px;font-size:14px;font-weight:600;border:none;cursor:pointer;transition:all .2s;font-family:'Inter',sans-serif;}
+.btn-primary{background:var(--navy-500);color:white;}
+.btn-primary:hover{background:var(--navy-600);}
+.btn-success{background:var(--sage-500);color:white;}
+.btn-success:hover{background:#4f7039;}
+.btn-danger{background:#dc2626;color:white;}
+.btn-danger:hover{background:#b91c1c;}
+.btn-secondary{background:white;color:var(--text-main);border:1.5px solid var(--border);}
+.btn-secondary:hover{background:#f8fafc;}
+.btn-sm{padding:7px 14px;font-size:13px;}
+.import-card{background:white;border:1.5px solid var(--border);border-radius:var(--radius-lg);padding:18px 22px;margin-bottom:20px;}
+.import-card-title{font-size:14px;font-weight:600;margin-bottom:12px;color:var(--text-muted);}
+.import-form{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+.import-form input[type=file]{flex:1;min-width:0;padding:9px 12px;border:1.5px solid var(--border);border-radius:var(--radius-md);font-size:13px;background:white;}
+.alert{border-radius:var(--radius-md);padding:13px 16px;font-size:14px;margin-bottom:18px;display:flex;align-items:center;gap:10px;}
+.alert-success{background:#f0fdf4;border:1px solid #bbf7d0;color:#166534;}
+.alert-error{background:#fef2f2;border:1px solid #fecaca;color:#991b1b;}
+.search-row{display:flex;gap:10px;margin-bottom:20px;}
+.search-row input{flex:1;padding:11px 16px;border:1.5px solid var(--border);border-radius:50px;font-size:14px;outline:none;font-family:'Inter',sans-serif;transition:border-color .2s;}
+.search-row input:focus{border-color:var(--navy-400);}
+.search-row button{padding:11px 20px;background:var(--navy-500);color:white;border:none;border-radius:50px;cursor:pointer;font-size:14px;font-weight:600;}
+.search-row a.reset{padding:11px 16px;background:white;border:1.5px solid var(--border);border-radius:50px;font-size:14px;color:var(--text-muted);}
+.table-wrap{background:white;border-radius:var(--radius-lg);border:1px solid var(--border);overflow:hidden;}
+.table-scroll{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;min-width:900px;}
+thead th{background:#f8fafc;padding:13px 16px;text-align:left;font-size:13px;font-weight:600;color:var(--text-muted);border-bottom:1px solid var(--border);}
+tbody td{padding:13px 16px;font-size:14px;border-bottom:1px solid var(--border);}
+tbody tr:last-child td{border-bottom:none;}
+tbody tr:hover td{background:#fafbfc;}
+.action-cell{display:flex;gap:8px;flex-wrap:wrap;}
+.pagination-wrap{padding:16px 22px;border-top:1px solid var(--border);}
+.empty-row td{text-align:center;padding:40px;color:var(--text-muted);}
+footer{background:white;border-top:1px solid var(--border);padding:14px 28px;font-size:13px;color:var(--text-muted);}
+@media(max-width:768px){
+  .sidebar{left:calc(-1 * var(--sidebar-w));transition:left .25s ease;}
+  .sidebar.open{left:0;}
+  .overlay.show{display:block;}
+  .main{margin-left:0;}
+  .menu-toggle{display:flex;}
+  .topbar{padding-left:68px;}
+  .action-bar{flex-direction:column;align-items:flex-start;}
+  .import-form{flex-direction:column;}
+}
+</style>
 </head>
-
 <body>
+<button class="menu-toggle" id="menuToggle">☰</button>
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-brand">
+    <div class="sidebar-brand-icon">📚</div>
+    <div class="sidebar-brand-text"><strong>PustakaLog</strong><small>Admin Panel</small></div>
+  </div>
+  <div class="sidebar-section-label">Menu Utama</div>
+  <nav class="sidebar-menu">
+    <a href="{{ route('admin.dashboard') }}"><span class="icon">🏠</span> Dashboard</a>
+    <a href="{{ route('buku.index') }}" class="active"><span class="icon">📚</span> Data Buku</a>
+    <a href="{{ route('detail-buku.index') }}"><span class="icon">📖</span> Detail Buku</a>
+    <a href="{{ route('anggota.index') }}"><span class="icon">👥</span> Data Anggota</a>
+    <a href="{{ route('peminjaman.index') }}"><span class="icon">🔄</span> Peminjaman</a>
+  </nav>
+  <div class="sidebar-section-label">Lainnya</div>
+  <nav class="sidebar-menu">
+    <a href="{{ route('admin.users') }}"><span class="icon">🔗</span> Kelola Akun User</a>
+    <a href="{{ route('laporan.index') }}"><span class="icon">📊</span> Laporan</a>
+  </nav>
+  <div class="sidebar-footer">
+    <form action="{{ route('logout') }}" method="POST">@csrf<button type="submit"><span class="icon">🚪</span> Keluar</button></form>
+  </div>
+</aside>
+<div class="main">
+  <header class="topbar">
+    <div class="topbar-left">
+      <h1>Data Buku</h1>
+      <div class="breadcrumb">Dashboard › Data Buku</div>
+    </div>
+    <div class="topbar-right">
+      <div class="topbar-avatar">{{ strtoupper(substr(Auth::user()->nama,0,1)) }}</div>
+      <span style="font-size:14px;font-weight:500;">{{ Auth::user()->nama }}</span>
+    </div>
+  </header>
+  <main class="content">
 
-    <div class="header">
-        <h2>📚 Sistem Informasi Perpustakaan</h2>
+    @if(session('success'))
+      <div class="alert alert-success">✓ {{ session('success') }}</div>
+    @endif
+    @if(session('error'))
+      <div class="alert alert-error">✕ {{ session('error') }}</div>
+    @endif
+    @if($errors->any())
+      <div class="alert alert-error">
+        <div><strong>Kesalahan:</strong><ul style="margin:6px 0 0 16px;">@foreach($errors->all() as $e)<li>{{ $e }}</li>@endforeach</ul></div>
+      </div>
+    @endif
 
-        @auth
-            <span>{{ Auth::user()->nama }}</span>
-        @endauth
+    <div class="action-bar">
+      <div class="action-bar-left">
+        <a href="{{ route('buku.create') }}" class="btn btn-primary">+ Tambah Buku</a>
+      </div>
     </div>
 
-    <div class="container">
-
-        <div class="top">
-
-            <a href="{{ route('admin.dashboard') }}" class="back-button">
-                ←
-            </a>
-
-            <h1>Data Buku</h1>
-
-            <a href="{{ route('buku.create') }}" class="add-button">
-                + Tambah Buku
-            </a>
-
-        </div>
-
-        @if (session('success'))
-            <div class="success">
-                {{ session('success') }}
-            </div>
-        @endif
-
-        @if (session('error'))
-            <div style="background:#fee2e2;color:#991b1b;padding:12px 15px;border-radius:8px;margin-bottom:20px;">
-                {{ session('error') }}
-            </div>
-        @endif
-
-        @if ($errors->any())
-            <div style="background:#fee2e2;color:#991b1b;padding:12px 15px;border-radius:8px;margin-bottom:20px;">
-                <strong>Terjadi kesalahan saat import:</strong>
-                <ul style="margin:8px 0 0 18px;">
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
-
-        <div class="import-box">
-
-            <form
-                action="{{ route('buku.import') }}"
-                method="POST"
-                enctype="multipart/form-data"
-                class="import-form"
-            >
-
-                @csrf
-
-                <input
-                    type="file"
-                    name="file"
-                    class="file-input"
-                    accept=".xlsx,.xls,.csv"
-                    required
-                >
-
-                <button type="submit" class="import-button">
-                    📥 Import Excel
-                </button>
-
-            </form>
-
-        </div>
-
-        <form action="{{ route('buku.index') }}" method="GET" class="search">
-
-            <input
-                type="text"
-                name="search"
-                value="{{ $search ?? '' }}"
-                placeholder="Cari ID buku, judul, pengarang, atau penerbit..."
-            >
-
-            <button type="submit">
-                🔎 Cari
-            </button>
-
-            @if ($search)
-                <a href="{{ route('buku.index') }}" class="reset-button">
-                    Reset
-                </a>
-            @endif
-
-        </form>
-
-        <div class="table-wrapper">
-
-            <table>
-
-                <thead>
-                    <tr>
-                        <th>No</th>
-                        <th>ID Buku</th>
-                        <th>Judul Buku</th>
-                        <th>Pengarang</th>
-                        <th>Penerbit</th>
-                        <th>Tahun</th>
-                        <th>Jumlah</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-
-                    @forelse ($buku as $item)
-
-                        <tr>
-
-                            <td>
-                                {{ $buku->firstItem() + $loop->index }}
-                            </td>
-
-                            <td>
-                                {{ $item->id_buku }}
-                            </td>
-
-                            <td>
-                                {{ $item->judul_buku }}
-                            </td>
-
-                            <td>
-                                {{ $item->pengarang }}
-                            </td>
-
-                            <td>
-                                {{ $item->penerbit ?? '-' }}
-                            </td>
-
-                            <td>
-                                {{ $item->tahun_terbit ?? '-' }}
-                            </td>
-
-                            <td>
-                                {{ $item->jumlah }}
-                            </td>
-
-                            <td>
-
-                                <a
-                                    href="{{ route('buku.edit', $item->id_buku) }}"
-                                    class="action-edit"
-                                >
-                                    Edit
-                                </a>
-
-                                <form
-                                    action="{{ route('buku.destroy', $item->id_buku) }}"
-                                    method="POST"
-                                    style="display:inline;"
-                                >
-
-                                    @csrf
-                                    @method('DELETE')
-
-                                    <button
-                                        type="submit"
-                                        class="action-delete"
-                                        onclick="return confirm('Yakin ingin menghapus buku ini?')"
-                                    >
-                                        Hapus
-                                    </button>
-
-                                </form>
-
-                                <form
-                                    action="{{ route('detail-buku.generate', $item->id_buku) }}"
-                                    method="POST"
-                                    style="display:inline;"
-                                >
-
-                                    @csrf
-
-                                    <button
-                                        type="submit"
-                                        class="action-generate"
-                                        onclick="return confirm('Generate detail buku sebanyak {{ $item->jumlah }} eksemplar?')"
-                                    >
-                                        Generate
-                                    </button>
-
-                                </form>
-
-                            </td>
-
-                        </tr>
-
-                    @empty
-
-                        <tr>
-                            <td colspan="8" class="empty">
-                                Belum ada data buku.
-                            </td>
-                        </tr>
-
-                    @endforelse
-
-                </tbody>
-
-            </table>
-
-        </div>
-
-        <div class="pagination">
-            {{ $buku->links() }}
-        </div>
-
+    <div class="import-card">
+      <div class="import-card-title">📥 Import Buku dari Excel</div>
+      <form action="{{ route('buku.import') }}" method="POST" enctype="multipart/form-data" class="import-form">
+        @csrf
+        <input type="file" name="file" accept=".xlsx,.xls,.csv" required>
+        <button type="submit" class="btn btn-success btn-sm">Upload Excel</button>
+      </form>
+      <p style="font-size:12px;color:var(--text-muted);margin-top:8px;">Format: .xlsx, .xls, .csv · Maks 2MB · Nama sheet: <strong>Data Buku</strong></p>
     </div>
 
+    <div class="search-row">
+      <form action="{{ route('buku.index') }}" method="GET" style="display:flex;gap:10px;flex:1;">
+        <input type="text" name="search" value="{{ $search ?? '' }}" placeholder="Cari ID, judul, pengarang, atau penerbit...">
+        <button type="submit">🔎 Cari</button>
+      </form>
+      @if($search)
+        <a href="{{ route('buku.index') }}" class="reset">Reset</a>
+      @endif
+    </div>
+
+    <div class="table-wrap">
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>No</th><th>ID Buku</th><th>Judul Buku</th><th>Pengarang</th><th>Penerbit</th><th>Tahun</th><th>Jumlah</th><th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            @forelse($buku as $item)
+              <tr>
+                <td>{{ $buku->firstItem() + $loop->index }}</td>
+                <td><code style="background:#f1f5f9;padding:2px 7px;border-radius:5px;font-size:12px;">{{ $item->id_buku }}</code></td>
+                <td style="font-weight:500;">{{ $item->judul_buku }}</td>
+                <td>{{ $item->pengarang }}</td>
+                <td>{{ $item->penerbit ?? '-' }}</td>
+                <td>{{ $item->tahun_terbit ?? '-' }}</td>
+                <td>{{ $item->jumlah }}</td>
+                <td>
+                  <div class="action-cell">
+                    <a href="{{ route('buku.edit', $item->id_buku) }}" class="btn btn-secondary btn-sm">Edit</a>
+                    <form action="{{ route('detail-buku.generate', $item->id_buku) }}" method="POST" style="display:inline;">
+                      @csrf
+                      <button type="submit" class="btn btn-success btn-sm" onclick="return confirm('Generate {{ $item->jumlah }} eksemplar untuk buku ini?')">Generate</button>
+                    </form>
+                    <form action="{{ route('buku.destroy', $item->id_buku) }}" method="POST" style="display:inline;">
+                      @csrf @method('DELETE')
+                      <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Hapus buku ini?')">Hapus</button>
+                    </form>
+                  </div>
+                </td>
+              </tr>
+            @empty
+              <tr class="empty-row"><td colspan="8">Belum ada data buku.</td></tr>
+            @endforelse
+          </tbody>
+        </table>
+      </div>
+      <div class="pagination-wrap">{{ $buku->links() }}</div>
+    </div>
+
+  </main>
+  <footer>&copy; {{ date('Y') }} PustakaLog — Sistem Informasi Perpustakaan</footer>
+</div>
+<script>
+const menuToggle=document.getElementById('menuToggle'),sidebar=document.getElementById('sidebar'),overlay=document.getElementById('overlay');
+menuToggle.addEventListener('click',()=>{sidebar.classList.add('open');overlay.classList.add('show');});
+function closeSidebar(){sidebar.classList.remove('open');overlay.classList.remove('show');}
+</script>
 </body>
-
 </html>
