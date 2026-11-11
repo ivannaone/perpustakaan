@@ -1,11 +1,35 @@
 @import 'tailwindcss';
 
-@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
-@source '../../storage/framework/views/*.php';
-@source '../**/*.blade.php';
-@source '../**/*.js';
-
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-sans: 'Lora', 'Georgia', serif;
+    --font-body: 'Inter', system-ui, sans-serif;
+
+    --color-cream-50:  #fdfaf5;
+    --color-cream-100: #f7f1e3;
+    --color-cream-200: #ede4cc;
+    --color-cream-300: #ddd0b0;
+
+    --color-brown-400: #a07850;
+    --color-brown-500: #8a6540;
+    --color-brown-600: #704f2e;
+    --color-brown-700: #5a3e22;
+    --color-brown-800: #3e2a14;
+
+    --color-sage-200:  #d4dfc8;
+    --color-sage-300:  #b8cca8;
+    --color-sage-400:  #8aab70;
+    --color-sage-500:  #6a8f52;
+    --color-sage-600:  #4f7039;
+
+    --color-navy-500:  #1e3a5f;
+    --color-navy-600:  #162d4a;
+    --color-navy-700:  #0f1f35;
+    --color-navy-400:  #2a5080;
+
+    --color-warm-bg:   #fdfaf5;
+    --color-warm-card: #fffdf8;
+
+    --shadow-soft:  0 2px 12px 0 rgba(80, 50, 20, 0.08);
+    --shadow-card:  0 4px 24px 0 rgba(80, 50, 20, 0.10);
+    --shadow-modal: 0 8px 48px 0 rgba(30, 20, 10, 0.18);
 }
