@@ -1,162 +1,129 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tambah Detail Buku</title>
-
-    <style>
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f1f5f9;
-            color: #1e293b;
-        }
-
-        .header {
-            background: #2563eb;
-            color: white;
-            padding: 20px 30px;
-        }
-
-        .container {
-            max-width: 650px;
-            margin: 35px auto;
-            padding: 0 20px;
-        }
-
-        .card {
-            background: white;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-        }
-
-        label {
-            display: block;
-            margin-bottom: 7px;
-            font-weight: bold;
-        }
-
-        input, select {
-            width: 100%;
-            padding: 11px 13px;
-            margin-bottom: 18px;
-            border: 1px solid #d1d5db;
-            border-radius: 8px;
-        }
-
-        .button {
-            display: inline-block;
-            padding: 10px 16px;
-            border: none;
-            border-radius: 8px;
-            color: white;
-            background: #2563eb;
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        .back {
-            background: #64748b;
-        }
-
-        .error {
-            color: #dc2626;
-            font-size: 14px;
-            margin-top: -12px;
-            margin-bottom: 15px;
-        }
-
-        .actions {
-            display: flex;
-            gap: 10px;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tambah Eksemplar — PustakaLog</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{--cream-200:#ede4cc;--brown-500:#8a6540;--navy-500:#1e3a5f;--navy-600:#162d4a;--navy-400:#2a5080;--text-main:#1a1a2e;--text-muted:#64748b;--border:#e2e8f0;--radius-lg:14px;--radius-md:9px;--sidebar-w:240px;}
+body{font-family:'Inter',system-ui,sans-serif;background:#f1f5f9;color:var(--text-main);min-height:100vh;}
+a{text-decoration:none;color:inherit;}
+.sidebar{position:fixed;left:0;top:0;width:var(--sidebar-w);height:100vh;background:var(--navy-500);color:white;display:flex;flex-direction:column;z-index:100;overflow-y:auto;}
+.sidebar-brand{padding:24px 20px 16px;border-bottom:1px solid rgba(255,255,255,.08);display:flex;align-items:center;gap:10px;}
+.sidebar-brand-icon{width:36px;height:36px;background:rgba(255,255,255,.12);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px;}
+.sidebar-brand-text strong{display:block;font-family:'Lora',serif;font-size:16px;}
+.sidebar-brand-text small{font-size:10px;opacity:.6;letter-spacing:.5px;text-transform:uppercase;}
+.sidebar-section-label{padding:20px 20px 8px;font-size:10px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;opacity:.45;}
+.sidebar-menu{padding:0 12px;}
+.sidebar-menu a{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:var(--radius-md);font-size:14px;font-weight:500;color:rgba(255,255,255,.75);margin-bottom:2px;transition:background .15s,color .15s;}
+.sidebar-menu a:hover{background:rgba(255,255,255,.08);color:white;}
+.sidebar-menu a.active{background:rgba(255,255,255,.14);color:white;}
+.sidebar-menu a .icon{font-size:16px;width:20px;text-align:center;}
+.sidebar-footer{margin-top:auto;padding:16px 12px 20px;border-top:1px solid rgba(255,255,255,.08);}
+.sidebar-footer form button{width:100%;display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:var(--radius-md);background:none;border:none;cursor:pointer;font-size:14px;color:rgba(255,255,255,.65);font-family:'Inter',sans-serif;}
+.sidebar-footer form button:hover{background:rgba(255,255,255,.08);color:white;}
+.menu-toggle{display:none;position:fixed;top:14px;left:14px;width:40px;height:40px;background:var(--navy-500);color:white;border:none;border-radius:10px;cursor:pointer;font-size:18px;z-index:150;align-items:center;justify-content:center;}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:90;}
+.main{margin-left:var(--sidebar-w);min-height:100vh;display:flex;flex-direction:column;}
+.topbar{background:white;border-bottom:1px solid var(--border);padding:0 28px;height:64px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;}
+.topbar-left h1{font-size:20px;font-weight:700;}
+.topbar-left .breadcrumb{font-size:12px;color:var(--text-muted);margin-top:2px;}
+.topbar-right{display:flex;align-items:center;gap:12px;}
+.topbar-avatar{width:36px;height:36px;border-radius:50%;background:var(--cream-200);color:var(--brown-500);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;border:2px solid var(--border);}
+.content{flex:1;padding:28px;}
+.form-card{background:white;border:1px solid var(--border);border-radius:var(--radius-lg);padding:28px;max-width:600px;}
+.form-card h2{font-family:'Lora',serif;font-size:20px;font-weight:700;margin-bottom:4px;}
+.form-card .subtitle{font-size:13px;color:var(--text-muted);margin-bottom:24px;}
+.form-group{margin-bottom:18px;}
+.form-group label{display:block;font-size:13px;font-weight:600;color:var(--text-main);margin-bottom:7px;}
+.form-group label .req{color:#dc2626;margin-left:2px;}
+.form-group input,.form-group select{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:var(--radius-md);font-family:'Inter',sans-serif;font-size:14px;color:var(--text-main);outline:none;transition:border-color .2s;background:white;}
+.form-group input:focus,.form-group select:focus{border-color:var(--navy-400);box-shadow:0 0 0 3px rgba(42,80,128,.12);}
+.field-hint{font-size:12px;color:var(--text-muted);margin-top:5px;}
+.field-error{font-size:12px;color:#dc2626;margin-top:5px;}
+.form-actions{display:flex;gap:10px;margin-top:8px;}
+.btn{display:inline-flex;align-items:center;gap:7px;padding:11px 22px;border-radius:50px;font-size:14px;font-weight:600;border:none;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s;}
+.btn-primary{background:var(--navy-500);color:white;}
+.btn-primary:hover{background:var(--navy-600);}
+.btn-secondary{background:white;color:var(--text-main);border:1.5px solid var(--border);}
+.btn-secondary:hover{background:#f8fafc;}
+footer{background:white;border-top:1px solid var(--border);padding:14px 28px;font-size:13px;color:var(--text-muted);}
+@media(max-width:768px){.sidebar{left:calc(-1 * var(--sidebar-w));transition:left .25s ease;}.sidebar.open{left:0;}.overlay.show{display:block;}.main{margin-left:0;}.menu-toggle{display:flex;}.topbar{padding-left:68px;}}
+</style>
 </head>
-
 <body>
-
-<div class="header">
-    <h2>Sistem Informasi Perpustakaan</h2>
-</div>
-
-<div class="container">
-
-    <div class="card">
-
-        <h1>Tambah Detail Buku</h1>
-
-        <form action="{{ route('detail-buku.store') }}" method="POST">
-            @csrf
-
-            <label>No. Buku</label>
-            <input
-                type="text"
-                name="no_buku"
-                value="{{ old('no_buku') }}"
-                placeholder="Contoh: B001-01"
-                required
-            >
-
-            @error('no_buku')
-                <div class="error">{{ $message }}</div>
-            @enderror
-
-            <label>Data Buku</label>
-
-            <select name="id_buku" required>
-                <option value="">-- Pilih Buku --</option>
-
-                @foreach ($buku as $item)
-                    <option
-                        value="{{ $item->id_buku }}"
-                        {{ old('id_buku') == $item->id_buku ? 'selected' : '' }}
-                    >
-                        {{ $item->id_buku }} - {{ $item->judul_buku }}
-                    </option>
-                @endforeach
-            </select>
-
-            @error('id_buku')
-                <div class="error">{{ $message }}</div>
-            @enderror
-
-            <label>Status</label>
-
-            <select name="status" required>
-                <option value="ada" {{ old('status', 'ada') === 'ada' ? 'selected' : '' }}>
-                    Ada
-                </option>
-
-                <option value="dipinjam" {{ old('status') === 'dipinjam' ? 'selected' : '' }}>
-                    Dipinjam
-                </option>
-            </select>
-
-            @error('status')
-                <div class="error">{{ $message }}</div>
-            @enderror
-
-            <div class="actions">
-                <a href="{{ route('detail-buku.index') }}" class="button back">
-                    Kembali
-                </a>
-
-                <button type="submit" class="button">
-                    Simpan
-                </button>
-            </div>
-
-        </form>
-
+<button class="menu-toggle" id="menuToggle">☰</button>
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-brand"><div class="sidebar-brand-icon">📚</div><div class="sidebar-brand-text"><strong>PustakaLog</strong><small>Admin Panel</small></div></div>
+  <div class="sidebar-section-label">Menu Utama</div>
+  <nav class="sidebar-menu">
+    <a href="{{ route('admin.dashboard') }}"><span class="icon">🏠</span> Dashboard</a>
+    <a href="{{ route('buku.index') }}"><span class="icon">📚</span> Data Buku</a>
+    <a href="{{ route('detail-buku.index') }}" class="active"><span class="icon">📖</span> Detail Buku</a>
+    <a href="{{ route('anggota.index') }}"><span class="icon">👥</span> Data Anggota</a>
+    <a href="{{ route('peminjaman.index') }}"><span class="icon">🔄</span> Peminjaman</a>
+  </nav>
+  <div class="sidebar-section-label">Lainnya</div>
+  <nav class="sidebar-menu">
+    <a href="{{ route('admin.users') }}"><span class="icon">🔗</span> Kelola Akun User</a>
+    <a href="{{ route('laporan.index') }}"><span class="icon">📊</span> Laporan</a>
+  </nav>
+  <div class="sidebar-footer"><form action="{{ route('logout') }}" method="POST">@csrf<button type="submit"><span class="icon">🚪</span> Keluar</button></form></div>
+</aside>
+<div class="main">
+  <header class="topbar">
+    <div class="topbar-left"><h1>Tambah Eksemplar</h1><div class="breadcrumb">Dashboard › Detail Buku › Tambah</div></div>
+    <div class="topbar-right"><div class="topbar-avatar">{{ strtoupper(substr(Auth::user()->nama,0,1)) }}</div></div>
+  </header>
+  <main class="content">
+    <div class="form-card">
+      <h2>Tambah Eksemplar Buku</h2>
+      <p class="subtitle">Daftarkan eksemplar fisik buku ke dalam sistem.</p>
+      <form action="{{ route('detail-buku.store') }}" method="POST">
+        @csrf
+        <div class="form-group">
+          <label>No. Eksemplar <span class="req">*</span></label>
+          <input type="text" name="no_buku" value="{{ old('no_buku') }}" placeholder="Contoh: B001-01" maxlength="20" required>
+          <div class="field-hint">Format: ID Buku diikuti nomor urut, contoh B001-01</div>
+          @error('no_buku')<div class="field-error">{{ $message }}</div>@enderror
+        </div>
+        <div class="form-group">
+          <label>Buku <span class="req">*</span></label>
+          <select name="id_buku" required>
+            <option value="">— Pilih Buku —</option>
+            @foreach($buku as $item)
+              <option value="{{ $item->id_buku }}" {{ old('id_buku')==$item->id_buku?'selected':'' }}>
+                {{ $item->id_buku }} — {{ $item->judul_buku }}
+              </option>
+            @endforeach
+          </select>
+          @error('id_buku')<div class="field-error">{{ $message }}</div>@enderror
+        </div>
+        <div class="form-group">
+          <label>Status <span class="req">*</span></label>
+          <select name="status" required>
+            <option value="ada" {{ old('status','ada')==='ada'?'selected':'' }}>Tersedia</option>
+            <option value="dipinjam" {{ old('status')==='dipinjam'?'selected':'' }}>Dipinjam</option>
+          </select>
+          @error('status')<div class="field-error">{{ $message }}</div>@enderror
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">Simpan Eksemplar</button>
+          <a href="{{ route('detail-buku.index') }}" class="btn btn-secondary">Batal</a>
+        </div>
+      </form>
     </div>
-
+  </main>
+  <footer>&copy; {{ date('Y') }} PustakaLog</footer>
 </div>
-
+<script>
+const menuToggle=document.getElementById('menuToggle'),sidebar=document.getElementById('sidebar'),overlay=document.getElementById('overlay');
+menuToggle.addEventListener('click',()=>{sidebar.classList.add('open');overlay.classList.add('show');});
+function closeSidebar(){sidebar.classList.remove('open');overlay.classList.remove('show');}
+</script>
 </body>
 </html>

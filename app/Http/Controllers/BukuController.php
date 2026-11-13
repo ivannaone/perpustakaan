@@ -88,6 +88,18 @@ class BukuController extends Controller
             ->with('success', 'Data buku berhasil diimport dari Excel.');
     }
 
+    public function show(Buku $buku)
+    {
+        $buku->load(['detailBuku' => function ($query) {
+            $query->orderBy('no_buku');
+        }]);
+
+        $tersedia = $buku->detailBuku->where('status', 'ada')->count();
+        $sedangDipinjam = $buku->detailBuku->where('status', 'dipinjam')->count();
+
+        return view('buku.show', compact('buku', 'tersedia', 'sedangDipinjam'));
+    }
+
     public function edit(Buku $buku)
     {
         return view('buku.edit', compact('buku'));

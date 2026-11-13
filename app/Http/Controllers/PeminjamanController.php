@@ -14,27 +14,29 @@ class PeminjamanController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
+        $status = $request->input('status');
+        $statusDiizinkan = ['dipinjam', 'dikembalikan'];
 
         $peminjaman = Peminjaman::with([
             'anggota',
             'detailBuku.buku'
         ])
+            ->when(in_array($status, $statusDiizinkan, true), function ($query) use ($status) {
+                $query->where('status', $status);
+            })
             ->when($search, function ($query) use ($search) {
-                $query->where('id_pinjam', 'like', "%{$search}%")
-                    ->orWhereHas('anggota', function ($q) use ($search) {
-                        $q->where(
-                            'nama_anggota',
-                            'like',
-                            "%{$search}%"
-                        );
-                    })
-                    ->orWhereHas('detailBuku', function ($q) use ($search) {
-                        $q->where(
-                            'no_buku',
-                            'like',
-                            "%{$search}%"
-                        );
-                    });
+                $query->where(function ($query) use ($search) {
+                    $query->where('id_pinjam', 'like', "%{$search}%")
+                        ->orWhereHas('anggota', function ($q) use ($search) {
+                            $q->where('nama_anggota', 'like', "%{$search}%");
+                        })
+                        ->orWhereHas('detailBuku', function ($q) use ($search) {
+                            $q->where('no_buku', 'like', "%{$search}%");
+                        })
+                        ->orWhereHas('detailBuku.buku', function ($q) use ($search) {
+                            $q->where('judul_buku', 'like', "%{$search}%");
+                        });
+                });
             })
             ->latest('tgl_pinjam')
             ->paginate(10)
@@ -42,7 +44,7 @@ class PeminjamanController extends Controller
 
         return view(
             'peminjaman.index',
-            compact('peminjaman', 'search')
+            compact('peminjaman', 'search', 'status')
         );
     }
 

@@ -26,16 +26,18 @@
             --shadow-card: 0 8px 48px rgba(30,16,4,.18);
         }
 
+        html { height: auto; }
         body {
             min-height: 100vh;
             font-family: 'Inter', system-ui, sans-serif;
             background: var(--cream-50);
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             justify-content: center;
             padding: 24px 16px;
             position: relative;
-            overflow: hidden;
+            overflow-x: hidden;
+            overflow-y: auto;
         }
 
         body::before {
@@ -53,7 +55,9 @@
             max-width: 980px;
             display: grid;
             grid-template-columns: 1fr 1fr;
-            min-height: 580px;
+            min-height: 0;
+            margin-top: auto;
+            margin-bottom: auto;
             border-radius: var(--radius-lg);
             overflow: hidden;
             box-shadow: var(--shadow-card);
@@ -220,16 +224,16 @@
             border-color: var(--sage-400);
             box-shadow: 0 0 0 3px rgba(138,171,112,.15);
         }
+        .input-wrap input { padding-right: 92px; }
 
         .toggle-pass {
             position: absolute;
-            right: 14px; top: 50%;
+            right: 10px; top: 50%;
             transform: translateY(-50%);
             background: none; border: none;
-            cursor: pointer; color: var(--text-muted);
-            font-size: 16px; padding: 4px;
-            line-height: 1;
-            transition: color .2s;
+            cursor: pointer; color: var(--brown-500);
+            font-size: 12px; font-weight: 650; padding: 4px 6px;
+            font-family: 'Inter', sans-serif;
         }
 
         .toggle-pass:hover { color: var(--brown-500); }
@@ -316,7 +320,7 @@
     </div>
 
     <div class="panel-right">
-        <h2>Selamat Datang 👋</h2>
+        <h2>Selamat datang kembali</h2>
         <p class="subtitle">Masuk ke akun perpustakaan kamu.</p>
 
         @if ($errors->any())
@@ -352,9 +356,7 @@
                         autocomplete="current-password"
                         required
                     >
-                    <button type="button" class="toggle-pass" onclick="togglePass('password', this)" aria-label="Tampilkan password">
-                        👁
-                    </button>
+                    <button type="button" class="toggle-pass" onclick="togglePass('password', this)" aria-label="Tampilkan password">Lihat</button>
                 </div>
             </div>
 
@@ -375,13 +377,9 @@
 <script>
     function togglePass(id, btn) {
         const input = document.getElementById(id);
-        if (input.type === 'password') {
-            input.type = 'text';
-            btn.textContent = '🙈';
-        } else {
-            input.type = 'password';
-            btn.textContent = '👁';
-        }
+        const shown = input.type === 'password';
+        input.type = shown ? 'text' : 'password';
+        btn.textContent = shown ? 'Sembunyi' : 'Lihat';
     }
 
     document.getElementById('loginForm').addEventListener('submit', function() {

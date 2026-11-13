@@ -185,6 +185,7 @@ footer{background:white;border-top:1px solid var(--border);padding:14px 28px;fon
                 <td>{{ $item->jumlah }}</td>
                 <td>
                   <div class="action-cell">
+                    <a href="{{ route('buku.show', $item->id_buku) }}" class="btn btn-secondary btn-sm">Detail</a>
                     <a href="{{ route('buku.edit', $item->id_buku) }}" class="btn btn-secondary btn-sm">Edit</a>
                     <form action="{{ route('detail-buku.generate', $item->id_buku) }}" method="POST" style="display:inline;">
                       @csrf

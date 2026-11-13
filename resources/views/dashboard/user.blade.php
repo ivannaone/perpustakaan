@@ -307,52 +307,7 @@
 </head>
 <body>
 
-<nav class="navbar" id="navbar">
-    <a href="{{ route('user.dashboard') }}" class="nav-brand">
-        <div class="nav-brand-icon">📖</div>
-        <div class="nav-brand-text">
-            <strong>Ruang Baca</strong>
-            <small>Perpustakaan</small>
-        </div>
-    </a>
-
-    <div class="nav-links">
-        <a href="{{ route('user.dashboard') }}" class="active">Beranda</a>
-        <a href="{{ route('user.buku') }}">Katalog</a>
-        <a href="{{ route('user.peminjaman') }}">Peminjaman</a>
-        <a href="{{ route('user.informasi') }}">Informasi</a>
-    </div>
-
-    <div class="nav-user">
-        <div class="nav-avatar">{{ strtoupper(substr(Auth::user()->nama, 0, 1)) }}</div>
-        <span class="nav-name">{{ Auth::user()->nama }}</span>
-        <button class="hamburger" id="hamburgerBtn" aria-label="Menu">☰</button>
-    </div>
-</nav>
-
-<div class="mobile-drawer" id="mobileDrawer">
-    <div class="drawer-overlay" onclick="closeDrawer()"></div>
-    <div class="drawer-panel">
-        <button class="drawer-close" onclick="closeDrawer()">✕</button>
-        <div style="display:flex;align-items:center;gap:10px;padding:0 4px 16px;border-bottom:1px solid var(--border);margin-bottom:8px;">
-            <div class="nav-avatar">{{ strtoupper(substr(Auth::user()->nama, 0, 1)) }}</div>
-            <span style="font-size:14px;font-weight:600;">{{ Auth::user()->nama }}</span>
-        </div>
-        <div class="drawer-nav">
-            <a href="{{ route('user.dashboard') }}" class="active">🏠 Beranda</a>
-            <a href="{{ route('user.buku') }}">📚 Katalog Buku</a>
-            <a href="{{ route('user.peminjaman') }}">📖 Peminjaman Saya</a>
-            <a href="{{ route('user.profile') }}">👤 Profil</a>
-            <a href="{{ route('user.informasi') }}">ℹ️ Informasi</a>
-        </div>
-        <div class="drawer-logout">
-            <form action="{{ route('logout') }}" method="POST">
-                @csrf
-                <button type="submit">🚪 Keluar</button>
-            </form>
-        </div>
-    </div>
-</div>
+@include('partials.ruang-nav', ['nav' => 'beranda'])
 
 <section class="hero">
     <div class="hero-inner">
@@ -454,6 +409,7 @@
             <a href="{{ route('user.buku') }}">Katalog Buku</a>
             <a href="{{ route('user.peminjaman') }}">Peminjaman Saya</a>
             <a href="{{ route('user.informasi') }}">Informasi</a>
+            <a href="{{ route('user.profile') }}">Profil</a>
         </div>
         <div class="footer-logout">
             <form action="{{ route('logout') }}" method="POST">

@@ -24,16 +24,18 @@
             --shadow-card: 0 8px 48px rgba(30,16,4,.18);
         }
 
+        html { height: auto; }
         body {
             min-height: 100vh;
             font-family: 'Inter', system-ui, sans-serif;
             background: var(--cream-50);
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             justify-content: center;
             padding: 24px 16px;
             position: relative;
-            overflow: hidden;
+            overflow-x: hidden;
+            overflow-y: auto;
         }
 
         body::before {
@@ -51,7 +53,9 @@
             max-width: 980px;
             display: grid;
             grid-template-columns: 1fr 1fr;
-            min-height: 620px;
+            min-height: 0;
+            margin-top: auto;
+            margin-bottom: auto;
             border-radius: var(--radius-lg);
             overflow: hidden;
             box-shadow: var(--shadow-card);
@@ -60,7 +64,7 @@
         }
 
         .panel-left {
-            background: linear-gradient(160deg, #2a4a2a 0%, #1a3a1a 50%, #3d2810 100%);
+            background: linear-gradient(160deg, #4a3520 0%, #2d2016 55%, #1a3a1a 100%);
             padding: 56px 48px;
             display: flex;
             flex-direction: column;
@@ -203,11 +207,13 @@
             box-shadow: 0 0 0 3px rgba(138,171,112,.15);
         }
 
+        .input-wrap input { padding-right: 92px; }
         .toggle-pass {
-            position: absolute; right: 14px; top: 50%;
+            position: absolute; right: 10px; top: 50%;
             transform: translateY(-50%);
             background: none; border: none; cursor: pointer;
-            color: var(--text-muted); font-size: 15px; padding: 4px;
+            color: var(--brown-500); font-size: 12px; font-weight: 650; padding: 4px 6px;
+            font-family: 'Inter', sans-serif;
         }
 
         .toggle-pass:hover { color: var(--brown-500); }
@@ -349,7 +355,7 @@
                         autocomplete="new-password"
                         required
                     >
-                    <button type="button" class="toggle-pass" onclick="togglePass('password', this)">👁</button>
+                    <button type="button" class="toggle-pass" onclick="togglePass('password', this)">Lihat</button>
                 </div>
                 <div class="field-hint">Minimal 6 karakter.</div>
                 @error('password') <div class="field-error">{{ $message }}</div> @enderror
@@ -366,7 +372,7 @@
                         autocomplete="new-password"
                         required
                     >
-                    <button type="button" class="toggle-pass" onclick="togglePass('password_confirmation', this)">👁</button>
+                    <button type="button" class="toggle-pass" onclick="togglePass('password_confirmation', this)">Lihat</button>
                 </div>
             </div>
 
@@ -387,7 +393,7 @@
     function togglePass(id, btn) {
         const input = document.getElementById(id);
         input.type = input.type === 'password' ? 'text' : 'password';
-        btn.textContent = input.type === 'password' ? '👁' : '🙈';
+        btn.textContent = input.type === 'password' ? 'Lihat' : 'Sembunyi';
     }
     document.getElementById('regForm').addEventListener('submit', function() {
         const btn = document.getElementById('regBtn');
