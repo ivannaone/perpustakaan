@@ -10,9 +10,13 @@ use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
 
-Route::get('/', function () {
-    return redirect()->route('login');
-});
+use App\Http\Controllers\HomeController;
+
+Route::get('/', [HomeController::class, 'index'])->name('home');
+
+Route::get('/katalog', [HomeController::class, 'katalog'])->name('katalog');
+
+Route::get('/informasi', [HomeController::class, 'informasi'])->name('informasi');
 
 Route::get('/login', [AuthController::class, 'showLogin'])
     ->name('login');
@@ -51,16 +55,45 @@ Route::get('/admin/dashboard', function () {
   ->name('admin.dashboard');
 
 Route::get('/user/dashboard', function () {
+    $user = auth()->user();
+
     $bukuTerbaru = \App\Models\Buku::withCount([
         'detailBuku as stok_tersedia' => function ($q) {
             $q->where('status', 'ada');
         },
     ])
     ->latest()
-    ->take(4)
+    ->take(6)
     ->get();
 
-    return view('dashboard.user', compact('bukuTerbaru'));
+    $totalBuku = \App\Models\Buku::count();
+    $totalTersedia = \App\Models\DetailBuku::where('status','ada')->count();
+
+    $peminjamanAktif = collect();
+    $totalPinjamUser = 0;
+    $totalKembaliUser = 0;
+
+    if ($user->id_anggota) {
+        $peminjamanAktif = \App\Models\Peminjaman::with(['detailBuku.buku'])
+            ->where('id_anggota', $user->id_anggota)
+            ->where('status', 'dipinjam')
+            ->latest('tgl_pinjam')
+            ->take(3)
+            ->get();
+
+        $totalPinjamUser  = \App\Models\Peminjaman::where('id_anggota', $user->id_anggota)->count();
+        $totalKembaliUser = \App\Models\Peminjaman::where('id_anggota', $user->id_anggota)
+            ->where('status','dikembalikan')->count();
+    }
+
+    return view('dashboard.user', compact(
+        'bukuTerbaru',
+        'totalBuku',
+        'totalTersedia',
+        'peminjamanAktif',
+        'totalPinjamUser',
+        'totalKembaliUser'
+    ));
 })->middleware(['auth', 'role:user'])
   ->name('user.dashboard');
 

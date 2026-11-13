@@ -150,7 +150,11 @@
 <footer>
     <div class="footer-inner">
         <div class="footer-brand"><strong>📖 Ruang Baca</strong><p>Sistem Informasi Perpustakaan</p></div>
+        @auth
         <div class="footer-logout"><form action="{{ route('logout') }}" method="POST">@csrf<button type="submit">🚪 Keluar</button></form></div>
+        @else
+        <div><a href="{{ route('login') }}" style="color:rgba(255,255,255,.7);font-size:13px;">Masuk</a></div>
+        @endauth
     </div>
 </footer>
 

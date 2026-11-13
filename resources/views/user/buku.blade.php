@@ -155,10 +155,17 @@
 <main class="container">
 
     @if(!$sudahTerhubung)
-        <div class="alert-warning">
-            <span style="font-size:18px;">⚠️</span>
-            <span>Akun kamu belum terhubung ke data anggota. Hubungi petugas perpustakaan agar bisa mengajukan peminjaman.</span>
-        </div>
+        @guest
+            <div class="alert-warning">
+                <span style="font-size:18px;">🔐</span>
+                <span>Silakan <a href="{{ route('login') }}" style="color:var(--brown-500);font-weight:600;">login</a> terlebih dahulu untuk mengajukan peminjaman buku.</span>
+            </div>
+        @else
+            <div class="alert-warning">
+                <span style="font-size:18px;">⚠️</span>
+                <span>Akun kamu belum terhubung ke data anggota. Hubungi petugas perpustakaan agar bisa mengajukan peminjaman.</span>
+            </div>
+        @endguest
     @endif
 
     @if(session('success'))
@@ -169,7 +176,7 @@
     @endif
 
     <div class="search-bar">
-        <form action="{{ route('user.buku') }}" method="GET" style="display:flex;flex:1;gap:10px;">
+        <form action="{{ route('katalog') }}" method="GET" style="display:flex;flex:1;gap:10px;">
             <input type="text" name="search" value="{{ $search }}" placeholder="Cari judul, pengarang, penerbit, atau ID buku...">
             <button type="submit">🔎 Cari</button>
         </form>
@@ -202,8 +209,10 @@
                                         @csrf
                                         <button type="submit" class="btn-pinjam">Pinjam Buku</button>
                                     </form>
-                                @else
+                                @elseif(auth()->check())
                                     <button type="button" class="btn-pinjam" disabled>Pinjam Buku</button>
+                                @else
+                                    <a href="{{ route('login') }}" class="btn-pinjam" style="display:block;text-align:center;text-decoration:none;">Login untuk Pinjam</a>
                                 @endif
                             @else
                                 <span class="badge badge-empty">Stok Habis</span>
@@ -230,9 +239,15 @@
             <strong>📖 Ruang Baca</strong>
             <p>Sistem Informasi Perpustakaan</p>
         </div>
+        @auth
         <div class="footer-logout">
             <form action="{{ route('logout') }}" method="POST">@csrf<button type="submit">🚪 Keluar</button></form>
         </div>
+        @else
+        <div class="footer-logout">
+            <a href="{{ route('login') }}" style="background:none;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.7);padding:8px 18px;border-radius:50px;font-size:13px;text-decoration:none;">Masuk</a>
+        </div>
+        @endauth
     </div>
 </footer>
 
