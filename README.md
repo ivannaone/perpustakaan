@@ -1,9 +1,90 @@
 # Sistem Informasi Perpustakaan
 
-Aplikasi web untuk mengelola data perpustakaan sekolah, mencakup anggota,
-koleksi buku, peminjaman, dan laporan. Dibuat sebagai project tugas sekolah.
+Aplikasi web untuk mengelola data perpustakaan sekolah, mencakup anggota, koleksi buku, peminjaman, dan laporan. Dibuat sebagai project tugas sekolah.
 
 **Pembuat:** Ivanna Maulida Ikmala
+
+---
+
+## Tampilan Aplikasi
+
+Berikut merupakan dokumentasi tampilan Sistem Informasi Perpustakaan.
+
+### 1. Halaman Publik
+
+**Dashboard Publik**
+
+![Dashboard Publik](docs/screenshoots/dashboard_publik.png)
+
+**Katalog Buku Publik**
+
+![Katalog Publik](docs/screenshoots/katalogpublik.png)
+
+**Informasi Perpustakaan**
+
+![Informasi Publik](docs/screenshoots/informasipublik.png)
+
+### 2. Halaman Autentikasi
+
+**Login**
+
+![Login](docs/screenshoots/login.png)
+
+**Registrasi Akun**
+
+![Daftar](docs/screenshoots/daftar.png)
+
+### 3. Halaman User
+
+**Dashboard User**
+
+![Dashboard User](docs/screenshoots/dashboarduser.png)
+
+**Katalog Buku**
+
+![Katalog User](docs/screenshoots/kataloguser.png)
+
+**Informasi Perpustakaan**
+
+![Informasi User](docs/screenshoots/informasiuser.png)
+
+**Peminjaman Saya**
+
+![Peminjaman User](docs/screenshoots/peminjamanuser.png)
+
+**Profil User**
+
+![Profil User](docs/screenshoots/profiluser.png)
+
+### 4. Halaman Admin
+
+**Dashboard Admin**
+
+![Dashboard Admin](docs/screenshoots/dashboardadmin.png)
+
+**Data Buku**
+
+![Data Buku Admin](docs/screenshoots/databukuadmin.png)
+
+**Detail Buku**
+
+![Detail Buku Admin](docs/screenshoots/detailbukuadmin.png)
+
+**Detail Anggota**
+
+![Detail Anggota Admin](docs/screenshoots/detailanggotaadmin.png)
+
+**Peminjaman**
+
+![Peminjaman Admin](docs/screenshoots/peminjamanadmin.png)
+
+**Kelola Akun User**
+
+![Kelola Akun User](docs/screenshoots/kelolaakunuseradmin.png)
+
+**Laporan Peminjaman**
+
+![Laporan Admin](docs/screenshoots/laporanadmin.png)
 
 ---
 
@@ -49,7 +130,7 @@ koleksi buku, peminjaman, dan laporan. Dibuat sebagai project tugas sekolah.
 
 ## Struktur Folder Utama
 
-```
+```text
 perpustakaan/
 ├── app/
 │   ├── Exports/                  PeminjamanExport.php
@@ -60,7 +141,8 @@ perpustakaan/
 │   └── Models/                   User, Anggota, Buku, DetailBuku, Peminjaman
 ├── database/
 │   └── migrations/               Semua file migration
-├── docs/                         Dokumentasi project
+├── docs/
+│   ├── screenshoots/             Screenshot tampilan aplikasi
 │   ├── erd.md                    ERD dan struktur database
 │   ├── instalasi.md              Panduan instalasi lokal
 │   ├── panduan-admin.md          Panduan penggunaan admin
@@ -97,7 +179,7 @@ composer install
 npm install && npm run build
 cp .env.example .env
 php artisan key:generate
-# konfigurasi database di .env
+# Konfigurasi database di .env
 php artisan migrate
 php artisan serve
 ```
