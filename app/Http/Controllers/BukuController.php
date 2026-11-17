@@ -79,13 +79,22 @@ class BukuController extends Controller
             'file' => 'required|mimes:xlsx,xls,csv|max:2048',
         ]);
 
-        Excel::import(
-            new BukuImport,
-            $request->file('file')
-        );
+        try {
+            Excel::import(new BukuImport, $request->file('file'));
 
-        return redirect()->route('buku.index')
-            ->with('success', 'Data buku berhasil diimport dari Excel.');
+            return redirect()->route('buku.index')
+                ->with('success', 'Data buku berhasil diimport dari Excel.');
+        } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
+            $failures = $e->failures();
+            $pesan = 'Beberapa baris gagal diimport: ';
+            foreach ($failures as $failure) {
+                $pesan .= 'Baris ' . $failure->row() . ' — ' . implode(', ', $failure->errors()) . '. ';
+            }
+            return redirect()->route('buku.index')->with('error', $pesan);
+        } catch (\Exception $e) {
+            return redirect()->route('buku.index')
+                ->with('error', 'Gagal import: ' . $e->getMessage());
+        }
     }
 
     public function show(Buku $buku)
