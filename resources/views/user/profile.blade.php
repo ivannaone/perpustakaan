@@ -154,7 +154,7 @@
         <aside class="profile-sidebar">
             <div class="avatar-big">{{ strtoupper(substr(Auth::user()->nama, 0, 1)) }}</div>
             <div class="profile-name">{{ Auth::user()->nama }}</div>
-            <div class="profile-username">@{{ Auth::user()->username }}</div>
+            <div class="profile-username">{{ Auth::user()->username }}</div>
             <span class="role-badge">{{ ucfirst(Auth::user()->role) }}</span>
             <div class="profile-actions">
                 <a href="{{ route('user.peminjaman') }}" class="btn-action">📖 Peminjaman Saya</a>
