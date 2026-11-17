@@ -147,6 +147,7 @@ footer{background:white;border-top:1px solid var(--border);padding:14px 28px;fon
                         <button type="submit" class="btn btn-success btn-sm" onclick="return confirm('Konfirmasi pengembalian buku ini?')">↩ Kembalikan</button>
                       </form>
                     @endif
+                    <a href="{{ route('peminjaman.cetak', $item->id_pinjam) }}" class="btn btn-secondary btn-sm" target="_blank">🖨 Cetak</a>
                     <form action="{{ route('peminjaman.destroy', $item->id_pinjam) }}" method="POST" style="display:inline;">
                       @csrf @method('DELETE')
                       <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Hapus data peminjaman ini?')">Hapus</button>

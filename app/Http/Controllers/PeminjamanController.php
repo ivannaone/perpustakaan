@@ -146,6 +146,36 @@ class PeminjamanController extends Controller
             );
     }
 
+    public function cetakSatu(Peminjaman $peminjaman)
+    {
+        $peminjaman->load(['anggota', 'detailBuku.buku']);
+
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView(
+            'laporan.cetak-satu',
+            compact('peminjaman')
+        );
+
+        return $pdf->download('bukti-peminjaman-' . $peminjaman->id_pinjam . '.pdf');
+    }
+
+    public function cetakSaya(Request $request, Peminjaman $peminjaman)
+    {
+        $user = $request->user();
+
+        if (!$user->id_anggota || $peminjaman->id_anggota !== $user->id_anggota) {
+            abort(403);
+        }
+
+        $peminjaman->load(['anggota', 'detailBuku.buku']);
+
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView(
+            'laporan.cetak-satu',
+            compact('peminjaman')
+        );
+
+        return $pdf->download('bukti-peminjaman-' . $peminjaman->id_pinjam . '.pdf');
+    }
+
     public function saya(Request $request)
     {
         $user = $request->user();

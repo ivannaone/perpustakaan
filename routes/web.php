@@ -105,6 +105,10 @@ Route::get('/user/peminjaman', [PeminjamanController::class, 'saya'])
     ->middleware(['auth', 'role:user'])
     ->name('user.peminjaman');
 
+Route::get('/user/peminjaman/{peminjaman}/cetak', [PeminjamanController::class, 'cetakSaya'])
+    ->middleware(['auth', 'role:user'])
+    ->name('user.peminjaman.cetak');
+
 Route::post('/user/pinjam/{buku}', [PeminjamanController::class, 'ajukan'])
     ->middleware(['auth', 'role:user'])
     ->name('user.pinjam');
@@ -145,6 +149,11 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         '/peminjaman/{peminjaman}/kembalikan',
         [PeminjamanController::class, 'returnBook']
     )->name('peminjaman.return');
+
+    Route::get(
+        '/peminjaman/{peminjaman}/cetak',
+        [PeminjamanController::class, 'cetakSatu']
+    )->name('peminjaman.cetak');
 
     Route::resource('peminjaman', PeminjamanController::class)
         ->only([

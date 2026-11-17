@@ -84,6 +84,14 @@
         .badge { display: inline-block; padding: 5px 12px; border-radius: 50px; font-size: 12px; font-weight: 600; }
         .badge-dipinjam   { background: #dbeafe; color: #1d4ed8; }
         .badge-kembali    { background: #dcfce7; color: #166534; }
+        .btn-cetak {
+            display: inline-flex; align-items: center; gap: 5px;
+            padding: 7px 14px; border-radius: 50px; font-size: 12px; font-weight: 600;
+            background: white; color: #1e3a5f;
+            border: 1.5px solid #bfdbfe;
+            text-decoration: none; transition: background .2s, border-color .2s;
+        }
+        .btn-cetak:hover { background: #eff6ff; border-color: #93c5fd; }
 
         .pagination-wrap { margin-top: 36px; display: flex; justify-content: center; }
 
@@ -168,6 +176,9 @@
                     @else
                         <span class="badge badge-kembali">Sudah Dikembalikan</span>
                     @endif
+                    <a href="{{ route('user.peminjaman.cetak', $item->id_pinjam) }}" class="btn-cetak" target="_blank">
+                        🖨 Cetak PDF
+                    </a>
                 </div>
             </div>
         @endforeach
