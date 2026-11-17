@@ -30,7 +30,7 @@ koleksi buku, peminjaman, dan laporan. Dibuat sebagai project tugas sekolah.
 - CRUD buku dan import dari Excel
 - Manajemen eksemplar buku (detail buku) dengan generate otomatis
 - Pencatatan peminjaman dan pengembalian buku
-- Kelola akun user — kaitkan akun dengan data anggota
+- Kelola akun user - kaitkan akun dengan data anggota
 - Laporan peminjaman: cetak PDF dan export Excel
 - Pencarian dan pagination pada semua halaman data
 
@@ -41,8 +41,8 @@ koleksi buku, peminjaman, dan laporan. Dibuat sebagai project tugas sekolah.
 - Dashboard dengan buku terbaru dari database
 - Katalog buku dengan pencarian dan informasi ketersediaan
 - Pengajuan peminjaman langsung dari katalog
-- Halaman Peminjaman Saya — riwayat peminjaman milik sendiri
-- Halaman Profil — ubah nama dan username
+- Halaman Peminjaman Saya - riwayat peminjaman milik sendiri
+- Halaman Profil - ubah nama dan username
 - Informasi perpustakaan
 
 ---
