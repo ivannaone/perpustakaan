@@ -93,14 +93,18 @@
                 <div class="login-dropdown" id="loginDropdown">
                     <span class="login-label">Sebagai User</span>
                     <a href="{{ route('login') }}">
-                        <span style="font-size:18px;">👤</span>
+                        <span style="font-size:16px;width:20px;text-align:center;flex-shrink:0;">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                        </span>
                         <div>
                             <strong style="display:block;font-size:13px;">Login User</strong>
                             <span style="font-size:12px;color:#64748b;">Akses perpustakaan</span>
                         </div>
                     </a>
                     <a href="{{ route('register') }}">
-                        <span style="font-size:18px;">✏️</span>
+                        <span style="font-size:16px;width:20px;text-align:center;flex-shrink:0;">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+                        </span>
                         <div>
                             <strong style="display:block;font-size:13px;">Daftar Akun</strong>
                             <span style="font-size:12px;color:#64748b;">Buat akun baru</span>
@@ -109,7 +113,9 @@
                     <div class="sep"></div>
                     <span class="login-label">Sebagai Admin</span>
                     <a href="{{ route('login') }}">
-                        <span style="font-size:18px;">🔐</span>
+                        <span style="font-size:16px;width:20px;text-align:center;flex-shrink:0;">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                        </span>
                         <div>
                             <strong style="display:block;font-size:13px;">Login Admin</strong>
                             <span style="font-size:12px;color:#64748b;">Kelola perpustakaan</span>
@@ -141,19 +147,19 @@
             </div>
         @endauth
         <div class="drawer-nav">
-            <a href="{{ route('home') }}" @class(['active' => $nav === 'beranda'])>🏠 Beranda</a>
-            <a href="{{ route('katalog') }}" @class(['active' => $nav === 'katalog'])>📚 Katalog Buku</a>
+            <a href="{{ route('home') }}" @class(['active' => $nav === 'beranda'])>Beranda</a>
+            <a href="{{ route('katalog') }}" @class(['active' => $nav === 'katalog'])>Katalog Buku</a>
             @auth
-                <a href="{{ route('user.peminjaman') }}" @class(['active' => $nav === 'peminjaman'])>📖 Peminjaman Saya</a>
-                <a href="{{ route('user.profile') }}" @class(['active' => $nav === 'profil'])>👤 Profil</a>
+                <a href="{{ route('user.peminjaman') }}" @class(['active' => $nav === 'peminjaman'])>Peminjaman Saya</a>
+                <a href="{{ route('user.profile') }}" @class(['active' => $nav === 'profil'])>Profil</a>
             @endauth
-            <a href="{{ route('informasi') }}" @class(['active' => $nav === 'informasi'])>ℹ️ Informasi</a>
+            <a href="{{ route('informasi') }}" @class(['active' => $nav === 'informasi'])>Informasi</a>
         </div>
         @auth
             <div style="margin-top:auto;">
                 <form action="{{ route('logout') }}" method="POST">
                     @csrf
-                    <button type="submit" style="width:100%;padding:11px;border-radius:9px;background:none;border:1.5px solid #e2e8f0;color:#64748b;font-size:14px;cursor:pointer;">🚪 Keluar</button>
+                    <button type="submit" style="width:100%;padding:11px;border-radius:9px;background:none;border:1.5px solid #e2e8f0;color:#64748b;font-size:14px;cursor:pointer;">Keluar</button>
                 </form>
             </div>
         @else

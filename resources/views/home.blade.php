@@ -136,7 +136,12 @@ footer{background:#0f172a;color:white;padding:40px 5%;}
 
 <nav class="navbar" id="navbar">
     <a href="{{ route('home') }}" class="nav-brand">
-        <div class="nav-brand-icon">📖</div>
+        <div class="nav-brand-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+            </svg>
+        </div>
         <div class="nav-brand-text"><strong>Ruang Baca</strong><small>Perpustakaan</small></div>
     </a>
     <div class="nav-links">
@@ -157,7 +162,11 @@ footer{background:#0f172a;color:white;padding:40px 5%;}
         @else
             <div style="position:relative;">
                 <button class="btn-masuk" id="loginToggle" type="button">
-                    👤 Masuk
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                        <circle cx="12" cy="7" r="4"/>
+                    </svg>
+                    Masuk
                 </button>
                 <div class="login-dropdown" id="loginDropdown">
                     <span class="login-label">Sebagai User</span>
@@ -202,13 +211,13 @@ footer{background:#0f172a;color:white;padding:40px 5%;}
             </div>
         @endauth
         <div class="drawer-nav">
-            <a href="{{ route('home') }}" class="active">🏠 Beranda</a>
-            <a href="{{ route('katalog') }}">📚 Katalog Buku</a>
+            <a href="{{ route('home') }}" class="active">Beranda</a>
+            <a href="{{ route('katalog') }}">Katalog Buku</a>
             @auth
-                <a href="{{ route('user.peminjaman') }}">📖 Peminjaman Saya</a>
-                <a href="{{ route('user.profile') }}">👤 Profil</a>
+                <a href="{{ route('user.peminjaman') }}">Peminjaman Saya</a>
+                <a href="{{ route('user.profile') }}">Profil</a>
             @endauth
-            <a href="{{ route('informasi') }}">ℹ️ Informasi</a>
+            <a href="{{ route('informasi') }}">Informasi</a>
         </div>
         @auth
             <div class="drawer-logout">
@@ -225,7 +234,7 @@ footer{background:#0f172a;color:white;padding:40px 5%;}
 
 <section class="hero">
     <div class="hero-inner">
-        <div class="hero-tag">✦ Perpustakaan Digital</div>
+        <div class="hero-tag">✦ PERPUSTAKAAN DIGITAL</div>
         <h1>Temukan Cerita,<br><em>Perluas Wawasan.</em></h1>
         <p>Jelajahi ribuan koleksi buku, cek ketersediaan, dan ajukan peminjaman dengan mudah dari mana saja.</p>
         <div class="hero-actions">
@@ -247,17 +256,23 @@ footer{background:#0f172a;color:white;padding:40px 5%;}
     <div class="section">
         <div class="feature-grid">
             <div class="feature-card">
-                <div class="feature-icon">📚</div>
+                <div class="feature-icon">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                </div>
                 <h3>Koleksi Lengkap</h3>
                 <p>Temukan ribuan judul buku dari berbagai kategori tersedia di perpustakaan kami.</p>
             </div>
             <div class="feature-card">
-                <div class="feature-icon">🔎</div>
+                <div class="feature-icon">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                </div>
                 <h3>Pencarian Mudah</h3>
                 <p>Cari buku berdasarkan judul, pengarang, atau penerbit dengan cepat dan akurat.</p>
             </div>
             <div class="feature-card">
-                <div class="feature-icon">📖</div>
+                <div class="feature-icon">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                </div>
                 <h3>Pinjam Online</h3>
                 <p>Ajukan peminjaman buku langsung dari sistem tanpa antri di perpustakaan.</p>
             </div>
@@ -307,7 +322,7 @@ footer{background:#0f172a;color:white;padding:40px 5%;}
 <footer>
     <div class="footer-inner">
         <div class="footer-brand">
-            <strong>📖 Ruang Baca</strong>
+            <strong>Ruang Baca</strong>
             <p>Sistem Informasi Perpustakaan</p>
         </div>
         <div class="footer-links">
@@ -320,7 +335,7 @@ footer{background:#0f172a;color:white;padding:40px 5%;}
         @auth
             <form action="{{ route('logout') }}" method="POST">
                 @csrf
-                <button type="submit" style="background:none;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.7);padding:9px 20px;border-radius:50px;cursor:pointer;font-size:13px;">🚪 Keluar</button>
+                <button type="submit" style="background:none;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.7);padding:9px 20px;border-radius:50px;cursor:pointer;font-size:13px;">Keluar</button>
             </form>
         @else
             <div style="display:flex;gap:10px;">
