@@ -194,8 +194,6 @@ php artisan serve
 | [`docs/instalasi.md`](docs/instalasi.md) | Instalasi dan konfigurasi lokal |
 | [`docs/panduan-admin.md`](docs/panduan-admin.md) | Panduan penggunaan untuk admin |
 | [`docs/panduan-user.md`](docs/panduan-user.md) | Panduan penggunaan untuk user |
-| [`docs/pengujian.md`](docs/pengujian.md) | Checklist dan skenario pengujian |
-| [`docs/persiapan-hosting.md`](docs/persiapan-hosting.md) | Persiapan dan panduan deployment |
 
 ---
 
