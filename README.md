@@ -147,8 +147,7 @@ perpustakaan/
 │   ├── instalasi.md              Panduan instalasi lokal
 │   ├── panduan-admin.md          Panduan penggunaan admin
 │   ├── panduan-user.md           Panduan penggunaan user
-│   ├── pengujian.md              Checklist pengujian
-│   └── persiapan-hosting.md      Panduan deployment
+│   
 ├── public/                       Document root (index.php)
 ├── resources/views/              Blade templates
 │   ├── admin/                    Halaman khusus admin (Kelola Akun User)
